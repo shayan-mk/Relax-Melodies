@@ -1,4 +1,4 @@
-package com.example.relaxmelodies;
+package model;
 
 import java.util.ArrayList;
 

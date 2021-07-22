@@ -1,4 +1,4 @@
-package com.example.relaxmelodies;
+package model;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class SavedMix {
     public void saveAMix(String name, ArrayList<String> melodies){
         new SavedMix(name, melodies);
 
-        //Todo: add to database.
+        //Todo: add to com.example.relaxmelodies.database.
     }
 
     private SavedMix(String name, ArrayList<String> melodies) {
