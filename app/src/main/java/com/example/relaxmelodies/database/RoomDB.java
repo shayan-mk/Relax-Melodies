@@ -6,8 +6,6 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import model.Melody;
-import model.SavedMix;
 
 @Database(entities = {Melody.class, SavedMix.class}, version = 1, exportSchema = false)
 
