@@ -7,13 +7,19 @@ public class Melody {
     private static ArrayList<Melody> allMelodies = new ArrayList<>();
     private static int lastUsedId = 0;
 
-    private int ID;
+    private String ID;
     private String name;
     private int duration;
     private String fileAddress;
 
-    public Melody(String name, int duration, String fileAddress) {
-        this.ID = lastUsedID() + 1;
+    public void saveAMelody(String name, int duration, String fileAddress){
+        new Melody(name, duration, fileAddress);
+
+        //Todo: add to database.
+    }
+
+    private Melody(String name, int duration, String fileAddress) {
+        this.ID = "Melody_" + (lastUsedID() + 1);
         this.name = name;
         this.duration = duration;
         this.fileAddress = fileAddress;
@@ -26,7 +32,7 @@ public class Melody {
         return allMelodies;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
@@ -40,10 +46,6 @@ public class Melody {
 
     public String getFileAddress() {
         return fileAddress;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
     }
 
     public void setName(String name) {
