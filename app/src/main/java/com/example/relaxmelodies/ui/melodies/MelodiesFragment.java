@@ -1,4 +1,4 @@
-package com.example.relaxmelodies.ui.notifications;
+package com.example.relaxmelodies.ui.melodies;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,24 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.relaxmelodies.R;
-import com.example.relaxmelodies.databinding.FragmentNotificationsBinding;
+import com.example.relaxmelodies.databinding.FragmentMelodiesBinding;
 
-public class NotificationsFragment extends Fragment {
+public class MelodiesFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
-    private FragmentNotificationsBinding binding;
+    private MelodiesViewModel melodiesViewModel;
+    private FragmentMelodiesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        melodiesViewModel =
+                new ViewModelProvider(this).get(MelodiesViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentMelodiesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        final TextView textView = binding.textMelodies;
+        melodiesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

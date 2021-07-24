@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">RelaxMelodies</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name">Just Relax!</string>
+    <string name="title_breathe">Breathe</string>
+    <string name="title_melodies">Melodies</string>
+    <string name="title_saved_mixes">Saved Mixes</string>
+    <string name="title_settings">Settings</string>
 </resources>
