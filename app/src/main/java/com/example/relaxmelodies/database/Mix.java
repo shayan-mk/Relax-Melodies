@@ -1,6 +1,5 @@
 package com.example.relaxmelodies.database;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Mix {
@@ -17,11 +16,11 @@ public class Mix {
         return name;
     }
 
-    public List<Integer> getMelody_ids(){
+    public List<Integer> getMelody_ids() {
         return melody_ids;
     }
 
-    public void addMelodyId(int id){
+    public void addMelodyId(int id) {
         melody_ids.add(id);
     }
 }
