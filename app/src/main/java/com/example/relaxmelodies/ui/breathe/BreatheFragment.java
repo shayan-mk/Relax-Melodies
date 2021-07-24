@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.relaxmelodies.databinding.FragmentBreatheBinding;
-import com.example.relaxmelodies.ui.breathe.BreatheViewModel;
 
 public class BreatheFragment extends Fragment {
 
@@ -23,7 +22,7 @@ public class BreatheFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         breatheViewModel =
-                new ViewModelProvider(this).get(BreatheViewModel.class);
+                new ViewModelProvider(getActivity()).get(BreatheViewModel.class);
 
         binding = FragmentBreatheBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

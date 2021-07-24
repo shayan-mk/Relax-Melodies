@@ -22,7 +22,7 @@ public class MelodiesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         melodiesViewModel =
-                new ViewModelProvider(this).get(MelodiesViewModel.class);
+                new ViewModelProvider(getActivity()).get(MelodiesViewModel.class);
 
         binding = FragmentMelodiesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

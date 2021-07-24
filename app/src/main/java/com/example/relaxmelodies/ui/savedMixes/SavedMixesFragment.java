@@ -22,7 +22,7 @@ public class SavedMixesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         savedMixesViewModel =
-                new ViewModelProvider(this).get(SavedMixesViewModel.class);
+                new ViewModelProvider(getActivity()).get(SavedMixesViewModel.class);
 
         binding = FragmentSavedMixesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

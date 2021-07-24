@@ -27,7 +27,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         settingsViewModel =
-                new ViewModelProvider(this).get(SettingsViewModel.class);
+                new ViewModelProvider(getActivity()).get(SettingsViewModel.class);
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -39,7 +39,6 @@ public class SettingsFragment extends Fragment {
                 textView.setText(s);
             }
         });
-
 
         //Initializing truncate button
         Button truncateButton = binding.truncateButton;
