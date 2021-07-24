@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 public class SettingsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
+    private MutableLiveData<Boolean> isNightMode;
 
     public SettingsViewModel() {
         mText = new MutableLiveData<>();
