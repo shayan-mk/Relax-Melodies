@@ -1,4 +1,4 @@
-package com.example.relaxmelodies.ui.home;
+package com.example.relaxmelodies.ui.savedMixes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,24 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.relaxmelodies.R;
-import com.example.relaxmelodies.databinding.FragmentHomeBinding;
+import com.example.relaxmelodies.databinding.FragmentSavedMixesBinding;
 
-public class HomeFragment extends Fragment {
+public class SavedMixesFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
-    private FragmentHomeBinding binding;
+    private SavedMixesViewModel savedMixesViewModel;
+    private FragmentSavedMixesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        savedMixesViewModel =
+                new ViewModelProvider(this).get(SavedMixesViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentSavedMixesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        final TextView textView = binding.textSavedMixes;
+        savedMixesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

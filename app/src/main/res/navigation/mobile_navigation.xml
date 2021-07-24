@@ -3,23 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_melodies">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.relaxmelodies.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_breathe"
+        android:name="com.example.relaxmelodies.ui.breathe.BreatheFragment"
+        android:label="@string/title_breathe"
+        tools:layout="@layout/fragment_breathe" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.relaxmelodies.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_melodies"
+        android:name="com.example.relaxmelodies.ui.melodies.MelodiesFragment"
+        android:label="@string/title_melodies"
+        tools:layout="@layout/fragment_melodies" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.relaxmelodies.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_saved_mixes"
+        android:name="com.example.relaxmelodies.ui.savedMixes.SavedMixesFragment"
+        android:label="@string/title_saved_mixes"
+        tools:layout="@layout/fragment_saved_mixes" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.relaxmelodies.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
