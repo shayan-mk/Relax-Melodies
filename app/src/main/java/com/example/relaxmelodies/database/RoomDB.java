@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 
-@Database(entities = {Melody.class, SavedMix.class}, version = 1, exportSchema = false)
+@Database(entities = {Melody.class, MixMelody.class}, version = 1, exportSchema = false)
 
 public abstract class RoomDB extends RoomDatabase {
     //Create database instance

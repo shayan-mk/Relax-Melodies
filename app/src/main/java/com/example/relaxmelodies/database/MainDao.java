@@ -16,26 +16,27 @@ public interface MainDao {
     void insert(Melody melody);
 
     @Insert(onConflict = REPLACE)
-    void insert(SavedMix savedMix);
+    void insert(MixMelody mixMelody);
 
     @Delete
     void delete(Melody melody);
 
-    @Delete
-    void delete(SavedMix savedMix);
+    @Query("DELETE FROM MixMelody WHERE name LIKE :name")
+    void delete(String name);
 
     @Query("DELETE FROM Melody")
     void deleteAllMelodies();
 
-    @Query("DELETE FROM SavedMix")
+    @Query("DELETE FROM MixMelody")
     void deleteAllSavedMixes();
 
     @Query("SELECT * FROM Melody")
     List<Melody> getAllMelodies();
 
-    @Query("SELECT * FROM SavedMix")
-    List<SavedMix> getAllSavedMixes();
+    @Query("SELECT * FROM MixMelody")
+    List<MixMelody> getAllSavedMixes();
 
-    @Query("SELECT * FROM SavedMix WHERE name LIKE :name ")
-    List<SavedMix> findSavedMixByName(String name);
+    //It is not necessary.
+    @Query("SELECT * FROM MixMelody WHERE name LIKE :name ")
+    List<MixMelody> findSavedMixByName(String name);
 }

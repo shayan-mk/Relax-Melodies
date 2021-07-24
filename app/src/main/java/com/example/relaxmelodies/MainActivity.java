@@ -14,6 +14,17 @@ import com.example.relaxmelodies.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Defining Message Codes
+    private static final int BASE_MESSAGE_CODE = 1000;
+    public static final int DB_MELODY_LOAD =        BASE_MESSAGE_CODE + 1;
+    public static final int DB_SAVED_MIX_LOAD =     BASE_MESSAGE_CODE + 2;
+    public static final int DB_MELODY_INSERT =      BASE_MESSAGE_CODE + 3;
+    public static final int DB_SAVED_MIX_INSERT =   BASE_MESSAGE_CODE + 4;
+    public static final int DB_MELODY_DELETE =      BASE_MESSAGE_CODE + 5;
+    public static final int DB_SAVED_MIX_DELETE =   BASE_MESSAGE_CODE + 6;
+    public static final int DB_MELODY_TRUNCATE =    BASE_MESSAGE_CODE + 7;
+    public static final int DB_SAVED_MIX_TRUNCATE = BASE_MESSAGE_CODE + 8;
+
     private ActivityMainBinding binding;
 
     @Override
