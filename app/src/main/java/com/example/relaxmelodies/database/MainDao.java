@@ -13,26 +13,26 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface MainDao {
 
-    @Insert(onConflict = REPLACE)
-    void insert(Melody melody);
+    /*@Insert(onConflict = REPLACE)
+    void insert(Melody melody);*/
 
     @Insert(onConflict = REPLACE)
     void insert(MixMelody mixMelody);
 
-    @Delete
-    void delete(Melody melody);
+    /*@Delete
+    void delete(Melody melody);*/
 
     @Query("DELETE FROM MixMelody WHERE name LIKE :name")
     void delete(String name);
 
-    @Query("DELETE FROM Melody")
-    void deleteAllMelodies();
+    /*@Query("DELETE FROM Melody")
+    void deleteAllMelodies();*/
 
     @Query("DELETE FROM MixMelody")
     void deleteAllSavedMixes();
 
-    @Query("SELECT * FROM Melody")
-    List<Melody> getAllMelodies();
+    /*@Query("SELECT * FROM Melody")
+    List<Melody> getAllMelodies();*/
 
     @Query("SELECT * FROM MixMelody")
     LiveData<List<MixMelody>> getAllSavedMixes();

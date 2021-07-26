@@ -108,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
     private void initApp(){
         Log.d(TAG, "initApp: ");
 
-        execute(DatabaseManager.getInstance().insertMelody(new Melody("sample", 100, R.raw.sea_waves, R.drawable.ic_home_black_24dp), handler));
-
         MelodiesViewModel melodiesVM =  new ViewModelProvider(this).get(MelodiesViewModel.class);
         Log.d(TAG, "initApp: live: "+ melodiesVM.getMelodies());
 //        Log.d(TAG, "initApp: value: "+ melodiesVM.getMelodies().getValue());

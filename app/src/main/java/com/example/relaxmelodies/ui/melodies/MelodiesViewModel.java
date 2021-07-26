@@ -14,12 +14,14 @@ public class MelodiesViewModel extends ViewModel {
     private final MutableLiveData<List<Melody>> mMelodies;
 
     public MelodiesViewModel() {
-        mMelodies = new MutableLiveData<>(DatabaseManager.getInstance().loadMelodies());
-//        mMelodies = DatabaseManager.getInstance().loadMelodies();
+        //TODO: fill it properly!
+        mMelodies = new MutableLiveData<>();
+
     }
 
     public LiveData<List<Melody>> getMelodies() {
-        mMelodies.setValue(DatabaseManager.getInstance().loadMelodies());
+        // mMelodies.setValue(DatabaseManager.getInstance().loadMelodies());
+        //TODO: fill it properly!
         return mMelodies;
     }
 }
