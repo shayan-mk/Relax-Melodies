@@ -1,5 +1,6 @@
 package com.example.relaxmelodies.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -31,10 +32,10 @@ public interface MainDao {
     void deleteAllSavedMixes();
 
     @Query("SELECT * FROM Melody")
-    List<Melody> getAllMelodies();
+    LiveData<List<Melody>> getAllMelodies();
 
     @Query("SELECT * FROM MixMelody")
-    List<MixMelody> getAllSavedMixes();
+    LiveData<List<MixMelody>> getAllSavedMixes();
 
     //It is not necessary.
     @Query("SELECT * FROM MixMelody WHERE name LIKE :name ")

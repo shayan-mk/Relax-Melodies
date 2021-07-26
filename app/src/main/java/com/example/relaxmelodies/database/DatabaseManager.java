@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.relaxmelodies.MainActivity;
 
 import java.util.ArrayList;
@@ -42,11 +44,11 @@ public class DatabaseManager {
         database.mainDao().deleteAllSavedMixes();
     }
 
-    private List<Melody> loadMelodies() {
+    private LiveData<List<Melody>> loadMelodies() {
         return database.mainDao().getAllMelodies();
     }
 
-    private List<MixMelody> loadSavedMixes() {
+    private LiveData<List<MixMelody>> loadSavedMixes() {
         return database.mainDao().getAllSavedMixes();
     }
 
@@ -69,12 +71,11 @@ public class DatabaseManager {
 
     public Runnable loadMelodyList(Handler handler) {
         return () -> {
-            List<Melody> melodyList = loadMelodies();
+            LiveData<List<Melody>> melodyList = loadMelodies();
             Message message = new Message();
             message.what = MainActivity.DB_MELODY_LOAD;
             message.arg1 = 1;
-            Melody[] melodies = new Melody[melodyList.size()];
-            message.obj = melodyList.toArray(melodies);
+            message.obj = melodyList;
             handler.sendMessage(message);
         };
     }
@@ -145,13 +146,15 @@ public class DatabaseManager {
 
     public Runnable loadMixList(Handler handler) {
         return () -> {
-            List<MixMelody> mixList = loadSavedMixes();
+            LiveData<List<MixMelody>> mixList = loadSavedMixes();
             List<Mix> mixes = new ArrayList<>();
 
-            for (MixMelody mixMelody : mixList) {
-                addMixMelodyToList(mixMelody, mixes);
+            List<MixMelody> lst = mixList.getValue();
+            if(lst != null && !lst.isEmpty()){
+                for (MixMelody mixMelody : mixList.getValue()) {
+                    addMixMelodyToList(mixMelody, mixes);
+                }
             }
-
             Message message = new Message();
             message.what = MainActivity.DB_SAVED_MIX_LOAD;
             message.arg1 = 1;
