@@ -9,7 +9,6 @@ import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.relaxmelodies.MainActivity;
 import com.example.relaxmelodies.database.Melody;
@@ -17,13 +16,11 @@ import com.example.relaxmelodies.databinding.FragmentMelodiesBinding;
 
 public class MelodiesFragment extends Fragment {
 
-    private MelodiesViewModel melodiesViewModel;
     private FragmentMelodiesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        melodiesViewModel =
-                new ViewModelProvider(getActivity()).get(MelodiesViewModel.class);
+
 
         binding = FragmentMelodiesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -41,12 +38,6 @@ public class MelodiesFragment extends Fragment {
         gridView.setAdapter(adapter);
         adapter.submitList(Melody.getAllMelodies());
 
-//        melodiesViewModel.getMelodies().observe(getViewLifecycleOwner(), new Observer<List<Melody>>() {
-//            @Override
-//            public void onChanged(List<Melody> melodies) {
-//                adapter.submitList(melodies);
-//            }
-//        });
         return root;
     }
 

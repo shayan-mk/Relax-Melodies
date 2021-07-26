@@ -13,6 +13,8 @@ import com.example.relaxmelodies.databinding.SavedMixItemBinding;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class SavedMixesAdapter extends ListAdapter<Mix, SavedMixesAdapter.MixViewHolder> {
 
     ItemActionListener listener;
@@ -47,8 +49,8 @@ public class SavedMixesAdapter extends ListAdapter<Mix, SavedMixesAdapter.MixVie
 
         public void bind(Mix savedMix, ItemActionListener listener) {
             binding.savedMixName.setText(savedMix.getName());
-            binding.savedMixDelete.setOnClickListener(view -> listener.onItemClick(savedMix.getName()));
-            itemView.setOnClickListener(view -> listener.onItemDelete(savedMix.getName()));
+            binding.savedMixDelete.setOnClickListener(view -> listener.onItemDelete(savedMix.getName()));
+            itemView.setOnClickListener(view -> listener.onItemClick(savedMix.getMelody_ids()));
         }
     }
 
@@ -70,7 +72,7 @@ public class SavedMixesAdapter extends ListAdapter<Mix, SavedMixesAdapter.MixVie
     }
 
     public interface ItemActionListener {
-        void onItemClick(String mixName);
+        void onItemClick(List<Integer> melodyIds);
 
         void onItemDelete(String mixName);
     }

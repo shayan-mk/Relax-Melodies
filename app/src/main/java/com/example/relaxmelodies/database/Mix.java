@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Mix {
 
-    private String name;
-    private List<Integer> melody_ids;
+    private final String name;
+    private final List<Integer> melody_ids;
 
     public Mix(String name, List<Integer> melody_ids) {
         this.name = name;

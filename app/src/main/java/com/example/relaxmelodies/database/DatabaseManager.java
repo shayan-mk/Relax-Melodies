@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
-import androidx.lifecycle.LiveData;
-
 import com.example.relaxmelodies.MainActivity;
 
 import java.util.ArrayList;
@@ -17,8 +15,11 @@ import java.util.List;
 public class DatabaseManager {
     public static final String TAG = DatabaseManager.class.getName();
 
-    private static RoomDB database;
-    private static DatabaseManager databaseManager = null;
+    private final RoomDB database;
+
+    public DatabaseManager(Context context) {
+        database = RoomDB.getInstance(context);
+    }
 
     /*private synchronized void insertMelody(Melody melody) {
         database.mainDao().insert(melody);
@@ -40,7 +41,7 @@ public class DatabaseManager {
         database.mainDao().deleteAllMelodies();
     }*/
 
-    private synchronized void truncateMixMelodyTable() {
+    private synchronized void truncateSavedMixes() {
         database.mainDao().deleteAllSavedMixes();
     }
 
@@ -49,25 +50,13 @@ public class DatabaseManager {
         return database.mainDao().getAllMelodies();
     }*/
 
-    public LiveData<List<MixMelody>> loadSavedMixes() {
+    private List<MixMelody> loadSavedMixes() {
         return database.mainDao().getAllSavedMixes();
     }
 
     //It is not necessary.
     private List<MixMelody> findMixByName(String name) {
         return database.mainDao().findSavedMixByName(name);
-    }
-
-    public static DatabaseManager getInstance() {
-        if (databaseManager == null) {
-            databaseManager = new DatabaseManager();
-        }
-        return databaseManager;
-    }
-
-    public static void initDatabaseManager(Context context) {
-        databaseManager = new DatabaseManager();
-        database = RoomDB.getInstance(context);
     }
 
     /*public Runnable loadMelodyList(Handler handler) {
@@ -112,10 +101,9 @@ public class DatabaseManager {
         };
     }*/
 
-    public Runnable insertMix(Mix mix, Handler handler) {
+    public Runnable insertMix(String name, List<Integer> melodyIds, Handler handler) {
         return () -> {
-            String name = mix.getName();
-            for (int melody_id : mix.getMelody_ids()) {
+            for (int melody_id : melodyIds) {
                 insertMixMelody(new MixMelody(name, melody_id));
             }
             Message message = new Message();
@@ -135,9 +123,9 @@ public class DatabaseManager {
         };
     }
 
-    public Runnable truncateMixMelodyTable(Handler handler) {
+    public Runnable truncateSavedMixes(Handler handler) {
         return () -> {
-            truncateMixMelodyTable();
+            truncateSavedMixes();
             Message message = new Message();
             message.what = MainActivity.DB_MELODY_TRUNCATE;
             message.arg1 = 1;
@@ -147,12 +135,11 @@ public class DatabaseManager {
 
     public Runnable loadMixList(Handler handler) {
         return () -> {
-            LiveData<List<MixMelody>> mixList = loadSavedMixes();
+            List<MixMelody> mixList = loadSavedMixes();
             List<Mix> mixes = new ArrayList<>();
 
-            List<MixMelody> lst = mixList.getValue();
-            if(lst != null && !lst.isEmpty()){
-                for (MixMelody mixMelody : mixList.getValue()) {
+            if(mixList != null && !mixList.isEmpty()){
+                for (MixMelody mixMelody : mixList) {
                     addMixMelodyToList(mixMelody, mixes);
                 }
             }

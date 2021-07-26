@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
@@ -28,7 +27,6 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
 
-    //Defining Message Codes
     private static final int BASE_MESSAGE_CODE = 1000;
     public static final int DB_MELODY_LOAD = BASE_MESSAGE_CODE + 1;
     public static final int DB_SAVED_MIX_LOAD = BASE_MESSAGE_CODE + 2;
@@ -39,19 +37,22 @@ public class MainActivity extends AppCompatActivity {
     public static final int DB_MELODY_TRUNCATE = BASE_MESSAGE_CODE + 7;
     public static final int DB_SAVED_MIX_TRUNCATE = BASE_MESSAGE_CODE + 8;
 
-    private ActivityMainBinding binding;
-    private ExecutorService threadPool;
-    private Handler handler;
     private MelodyManager melodyManager;
     private DatabaseManager databaseManager;
+    private Handler handler;
+    private ExecutorService threadPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DatabaseManager.initDatabaseManager(this);
-        threadPool = Executors.newFixedThreadPool(10);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        databaseManager = new DatabaseManager(this);
+        melodyManager = new MelodyManager(this);
+        threadPool = Executors.newFixedThreadPool(10);
+        handler = getNewHandler();
+
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         BottomNavigationView navView = binding.navView;
@@ -65,12 +66,69 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        initApp();
+        initPreferences();
 
-        handler = new Handler(Looper.getMainLooper()) {
+
+    }
+
+    private void initPreferences() {
+
+        SharedPreferences appSettingsPref = getSharedPreferences("AppSettingsPrefs", 0);
+        boolean isNightMode = appSettingsPref.getBoolean("NightMode", false);
+
+        if (isNightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
+    private void execute(Runnable runnable) {
+        threadPool.execute(runnable);
+    }
+
+    public void playMelody(int id) {
+        execute(melodyManager.playMelody(id));
+    }
+
+    public void stopMelody(int id) {
+        execute(melodyManager.stopMelody(id));
+    }
+
+    public void playMix(List<Integer> melodyIds) {
+
+        execute(melodyManager.playMix(melodyIds));
+    }
+
+    public void deleteMix(String mixName) {
+        execute(databaseManager.deleteMix(mixName, handler));
+    }
+
+    public void saveMix(String name, List<Integer> melodyIds) {
+        execute(databaseManager.insertMix(name, melodyIds, handler));
+    }
+
+    public void loadSavedMixes() {
+        execute(databaseManager.loadMixList(handler));
+    }
+
+    public void truncateSavedMixes() {
+        execute(databaseManager.truncateSavedMixes(handler));
+    }
+
+
+    public void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (inputMethodManager.isAcceptingText()) {
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    private Handler getNewHandler() {
+        return new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
-                Log.d(TAG, "handleMessage: " + msg.what);
                 switch (msg.what) {
                     case DB_MELODY_LOAD:
                         // TODO:
@@ -96,56 +154,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-    }
-
-    public void execute(Runnable runnable) {
-        threadPool.execute(runnable);
-    }
-
-    public Handler getHandler() {
-        return handler;
-    }
-
-    private void initApp() {
-
-        melodyManager = new MelodyManager(this);
-
-        SharedPreferences appSettingsPref = getSharedPreferences("AppSettingsPrefs", 0);
-        boolean isNightMode = appSettingsPref.getBoolean("NightMode", false);
-
-        if (isNightMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-    }
-
-    public void playMelody(int id) {
-        execute(melodyManager.playMelody(id));
-    }
-
-    public void stopMelody(int id) {
-        execute(melodyManager.stopMelody(id));
-    }
-
-    public void playMix(String mixName) {
-        // TODO
-    }
-
-    public List<Integer> getCurrentMelodies() {
-        // TODO
-        return null;
-    }
-
-    public void saveMix(String name, List<Integer> melodyIds) {
-        // TODO
-    }
-
-    public void hideSoftKeyboard() {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if(inputMethodManager.isAcceptingText()){
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
     }
 }

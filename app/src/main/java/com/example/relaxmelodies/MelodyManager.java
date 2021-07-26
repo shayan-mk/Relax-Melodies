@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.relaxmelodies.database.Melody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +16,13 @@ public class MelodyManager {
     private static final String TAG = MelodyManager.class.getName();
     private final Context context;
     private final Map<Integer, MediaPlayer> mediaPlayers;
+    private List<Integer> nowPlaying;
 
 
     public MelodyManager(Context context) {
         this.context = context;
         mediaPlayers = new HashMap<>();
+        nowPlaying = new ArrayList<>();
         initMediaPlayers();
     }
 
@@ -37,12 +40,10 @@ public class MelodyManager {
 
         if (mediaPlayer != null) {
             if (!mediaPlayer.isPlaying()) {
-                Log.d(TAG, "_internalPlayMelody: " + id + " preparing");
 //                    mediaPlayer.prepare();
-                Log.d(TAG, "_internalPlayMelody: " + id + " starting");
                 mediaPlayer.start();
                 mediaPlayer.setLooping(true);
-                Log.d(TAG, "_internalPlayMelody: " + id + " started");
+                nowPlaying.add(id);
             }
         }
     }
@@ -54,6 +55,7 @@ public class MelodyManager {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
                 mediaPlayer.release();
+                nowPlaying.remove(id);
             }
         }
     }
@@ -66,10 +68,9 @@ public class MelodyManager {
         };
     }
 
-    public Runnable stopAllMelodies() {
+    public Runnable releaseAll() {
         return () -> {
-            List<Integer> melodyIds = ((MainActivity) context).getCurrentMelodies();
-            for (Integer melodyId : melodyIds) {
+            for (Integer melodyId : nowPlaying) {
                 _internalStopMelody(melodyId);
             }
         };
