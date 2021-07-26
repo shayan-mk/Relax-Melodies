@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.relaxmelodies.MainActivity;
+import com.example.relaxmelodies.database.DatabaseManager;
 import com.example.relaxmelodies.database.Mix;
 import com.example.relaxmelodies.databinding.FragmentSavedMixesBinding;
 
@@ -79,7 +80,9 @@ public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.It
 
     @Override
     public void onItemDelete(String mixName) {
-        //TODO: delete from DB
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mainActivity.execute(DatabaseManager.getInstance().
+                deleteMix(mixName, mainActivity.getHandler()));
     }
 
 

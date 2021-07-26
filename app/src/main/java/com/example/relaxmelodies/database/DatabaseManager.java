@@ -123,9 +123,9 @@ public class DatabaseManager {
         };
     }
 
-    public Runnable deleteMelody(Mix mix, Handler handler) {
+    public Runnable deleteMix(String mixName, Handler handler) {
         return () -> {
-            deleteSavedMix(mix.getName());
+            deleteSavedMix(mixName);
             Message message = new Message();
             message.what = MainActivity.DB_MELODY_DELETE;
             message.arg1 = 1;
