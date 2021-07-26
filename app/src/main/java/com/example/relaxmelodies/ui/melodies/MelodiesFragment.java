@@ -4,19 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.relaxmelodies.MainActivity;
 import com.example.relaxmelodies.database.Melody;
 import com.example.relaxmelodies.databinding.FragmentMelodiesBinding;
 
-import java.util.List;
-
-public class MelodiesFragment extends Fragment implements MelodiesAdapter.ItemActionListener {
+public class MelodiesFragment extends Fragment {
 
     private MelodiesViewModel melodiesViewModel;
     private FragmentMelodiesBinding binding;
@@ -30,15 +29,24 @@ public class MelodiesFragment extends Fragment implements MelodiesAdapter.ItemAc
         View root = binding.getRoot();
 
         GridView gridView = binding.gridView;
-        MelodiesAdapter adapter = new MelodiesAdapter(this);
-        gridView.setAdapter(adapter);
-
-        melodiesViewModel.getMelodies().observe(getViewLifecycleOwner(), new Observer<List<Melody>>() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onChanged(List<Melody> melodies) {
-                adapter.submitList(melodies);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position % 2 == 0) {
+                    ((MainActivity) getContext()).playMelody(position / 2  + 1);
+                }
             }
         });
+        MelodiesAdapter adapter = new MelodiesAdapter();
+        gridView.setAdapter(adapter);
+        adapter.submitList(Melody.getAllMelodies());
+
+//        melodiesViewModel.getMelodies().observe(getViewLifecycleOwner(), new Observer<List<Melody>>() {
+//            @Override
+//            public void onChanged(List<Melody> melodies) {
+//                adapter.submitList(melodies);
+//            }
+//        });
         return root;
     }
 
@@ -46,10 +54,5 @@ public class MelodiesFragment extends Fragment implements MelodiesAdapter.ItemAc
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    @Override
-    public void onItemClick(int ID) {
-        // TODO: play melody
     }
 }

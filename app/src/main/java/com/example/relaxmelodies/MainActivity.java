@@ -1,29 +1,29 @@
 package com.example.relaxmelodies;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.relaxmelodies.database.DatabaseManager;
-import com.example.relaxmelodies.database.Melody;
 import com.example.relaxmelodies.databinding.ActivityMainBinding;
-import com.example.relaxmelodies.ui.melodies.MelodiesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DatabaseManager.initDatabaseManager(this);
+        threadPool = Executors.newFixedThreadPool(10);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -97,38 +98,34 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    public void execute(Runnable runnable){
+    public void execute(Runnable runnable) {
         threadPool.execute(runnable);
     }
 
-    public Handler getHandler(){
+    public Handler getHandler() {
         return handler;
     }
 
-    private void initApp(){
-        Log.d(TAG, "initApp: ");
+    private void initApp() {
 
-        MelodiesViewModel melodiesVM =  new ViewModelProvider(this).get(MelodiesViewModel.class);
-        Log.d(TAG, "initApp: live: "+ melodiesVM.getMelodies());
-//        Log.d(TAG, "initApp: value: "+ melodiesVM.getMelodies().getValue());
-//        melodyManager = new MelodyManager(this, melodiesVM.getMelodies().getValue());
+        melodyManager = new MelodyManager(this);
 
         SharedPreferences appSettingsPref = getSharedPreferences("AppSettingsPrefs", 0);
         boolean isNightMode = appSettingsPref.getBoolean("NightMode", false);
 
-        if(isNightMode){
+        if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 
-    public void playMelody(int ID) {
-        melodyManager._internalPlayMelody(ID);
+    public void playMelody(int id) {
+        execute(melodyManager.playMelody(id));
     }
 
-    public void stopMelody(int ID) {
-        melodyManager._internalStopMelody(ID);
+    public void stopMelody(int id) {
+        execute(melodyManager.stopMelody(id));
     }
 
     public void playMix(String mixName) {
@@ -138,5 +135,17 @@ public class MainActivity extends AppCompatActivity {
     public List<Integer> getCurrentMelodies() {
         // TODO
         return null;
+    }
+
+    public void saveMix(String name, List<Integer> melodyIds) {
+        // TODO
+    }
+
+    public void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if(inputMethodManager.isAcceptingText()){
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 }

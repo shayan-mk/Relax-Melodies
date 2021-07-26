@@ -5,23 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="10dp"
+    android:paddingTop="20dp">
 
     <ImageView
-        android:id="@+id/iconimage"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="#FFFFFF"
-        android:paddingTop="20dp"
-        android:src="@color/colorAccent"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        android:id="@+id/icon_image"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="melody icon" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textdata"
-        android:textColor="@color/colorPrimary"
-        android:text="Demo"
-        android:textSize="25dp"/>
+        android:id="@+id/text_data"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textSize="12sp"/>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

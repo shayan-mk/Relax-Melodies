@@ -1,24 +1,27 @@
 package com.example.relaxmelodies.database;
 
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import com.example.relaxmelodies.R;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //@Entity(tableName = "Melody")
 public class Melody implements Serializable {
 
+    private static final Map<Integer, Melody> allMelodies;
     private static int baseID;
-    private static Map<Integer, Melody > melodyIds;
+    static {
+        allMelodies = new HashMap<>();
+        baseID = 0;
+        initMelodies();
+    }
 
     //@PrimaryKey(autoGenerate = true)
-    public int ID;
+    private final int id;
 
     //@ColumnInfo(name = "name")
     private final String name;
@@ -29,13 +32,27 @@ public class Melody implements Serializable {
     //@ColumnInfo(name = "iconAddress")
     private final int iconResource;
 
-    private Melody( String name, int resourceId, int iconResource) {
+    private Melody(String name, int resourceId, int iconResource) {
+
         this.name = name;
         this.resourceId = resourceId;
         this.iconResource = iconResource;
 
         baseID += 1;
-        melodyIds.put(baseID, this);
+        this.id = baseID;
+        allMelodies.put(baseID, this);
+    }
+
+    public static List<Melody> getAllMelodies() {
+        return new ArrayList<>(allMelodies.values());
+    }
+
+    public static Melody getMelodyById(int id) {
+        return allMelodies.get(id);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -50,10 +67,7 @@ public class Melody implements Serializable {
         return iconResource;
     }
 
-    public void loadMelodies(){
-        melodyIds = new HashMap<>();
-        baseID = 1000;
-
+    private static void initMelodies(){
         new Melody("Bathing in the sea",                    R.raw.bathing_in_the_sea, R.drawable.ic_home_black_24dp);  //1001
         new Melody("Beach wave children",                   R.raw.beach_wave_children, R.drawable.ic_home_black_24dp); //1002
         new Melody("Choir group",                           R.raw.choir, R.drawable.ic_home_black_24dp);               //1003

@@ -3,7 +3,6 @@ package com.example.relaxmelodies.database;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -50,7 +49,7 @@ public class DatabaseManager {
         return database.mainDao().getAllMelodies();
     }*/
 
-    private LiveData<List<MixMelody>> loadSavedMixes() {
+    public LiveData<List<MixMelody>> loadSavedMixes() {
         return database.mainDao().getAllSavedMixes();
     }
 
