@@ -32,7 +32,7 @@ public interface MainDao {
     void deleteAllSavedMixes();
 
     @Query("SELECT * FROM Melody")
-    LiveData<List<Melody>> getAllMelodies();
+    List<Melody> getAllMelodies();
 
     @Query("SELECT * FROM MixMelody")
     LiveData<List<MixMelody>> getAllSavedMixes();

@@ -4,16 +4,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.relaxmelodies.database.DatabaseManager;
+import com.example.relaxmelodies.database.Melody;
+
+import java.util.List;
+
 public class MelodiesViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<List<Melody>> mMelodies;
 
     public MelodiesViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is melodies fragment");
+        mMelodies = new MutableLiveData<>(DatabaseManager.getInstance().loadMelodies());
+//        mMelodies = DatabaseManager.getInstance().loadMelodies();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<Melody>> getMelodies() {
+        mMelodies.setValue(DatabaseManager.getInstance().loadMelodies());
+        return mMelodies;
     }
 }

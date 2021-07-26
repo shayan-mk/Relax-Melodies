@@ -3,6 +3,7 @@ package com.example.relaxmelodies.database;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -44,7 +45,8 @@ public class DatabaseManager {
         database.mainDao().deleteAllSavedMixes();
     }
 
-    private LiveData<List<Melody>> loadMelodies() {
+    public List<Melody> loadMelodies() {
+        Log.d(TAG, "loadMelodies: "+ database);
         return database.mainDao().getAllMelodies();
     }
 
@@ -71,7 +73,7 @@ public class DatabaseManager {
 
     public Runnable loadMelodyList(Handler handler) {
         return () -> {
-            LiveData<List<Melody>> melodyList = loadMelodies();
+            List<Melody> melodyList = loadMelodies();
             Message message = new Message();
             message.what = MainActivity.DB_MELODY_LOAD;
             message.arg1 = 1;

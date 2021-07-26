@@ -10,15 +10,19 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.relaxmelodies.database.DatabaseManager;
+import com.example.relaxmelodies.database.Melody;
 import com.example.relaxmelodies.databinding.ActivityMainBinding;
+import com.example.relaxmelodies.ui.melodies.MelodiesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,10 +42,13 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ExecutorService threadPool;
     private Handler handler;
+    private MelodyManager melodyManager;
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DatabaseManager.initDatabaseManager(this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -58,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         initApp();
-
 
         handler = new Handler(Looper.getMainLooper()) {
             @Override
@@ -100,19 +106,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initApp(){
-        DatabaseManager.initDatabaseManager(this);
+        Log.d(TAG, "initApp: ");
+
+        execute(DatabaseManager.getInstance().insertMelody(new Melody("sample", 100, R.raw.sea_waves, R.drawable.ic_home_black_24dp), handler));
+
+        MelodiesViewModel melodiesVM =  new ViewModelProvider(this).get(MelodiesViewModel.class);
+        Log.d(TAG, "initApp: live: "+ melodiesVM.getMelodies());
+//        Log.d(TAG, "initApp: value: "+ melodiesVM.getMelodies().getValue());
+//        melodyManager = new MelodyManager(this, melodiesVM.getMelodies().getValue());
 
         SharedPreferences appSettingsPref = getSharedPreferences("AppSettingsPrefs", 0);
         boolean isNightMode = appSettingsPref.getBoolean("NightMode", false);
 
         if(isNightMode){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else{
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 
+    public void playMelody(int ID) {
+        melodyManager._internalPlayMelody(ID);
+    }
+
+    public void stopMelody(int ID) {
+        melodyManager._internalStopMelody(ID);
+    }
+
     public void playMix(String mixName) {
         // TODO
+    }
+
+    public List<Integer> getCurrentMelodies() {
+        // TODO
+        return null;
     }
 }

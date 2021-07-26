@@ -20,13 +20,17 @@ public class Melody implements Serializable {
     private final double duration;
 
     @ColumnInfo(name = "fileAddress")
-    private final String fileAddress;
+    private final int resourceId;
 
-    public Melody(String name, double duration, String fileAddress) {
+    @ColumnInfo(name = "iconAddress")
+    private final int iconResource;
+
+    public Melody(String name, double duration, int resourceId, int iconResource) {
 
         this.name = name;
         this.duration = duration;
-        this.fileAddress = fileAddress;
+        this.resourceId = resourceId;
+        this.iconResource = iconResource;
 
     }
 
@@ -38,8 +42,12 @@ public class Melody implements Serializable {
         return duration;
     }
 
-    public String getFileAddress() {
-        return fileAddress;
+    public int getResourceId() {
+        return resourceId;
+    }
+
+    public int getIconResource() {
+        return iconResource;
     }
 
 }
