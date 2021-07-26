@@ -1,17 +1,28 @@
 package com.example.relaxmelodies;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.relaxmelodies.database.DatabaseManager;
 import com.example.relaxmelodies.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.concurrent.ExecutorService;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getName();
 
     //Defining Message Codes
     private static final int BASE_MESSAGE_CODE = 1000;
@@ -25,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int DB_SAVED_MIX_TRUNCATE = BASE_MESSAGE_CODE + 8;
 
     private ActivityMainBinding binding;
+    private ExecutorService threadPool;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         BottomNavigationView navView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_breathe,
                 R.id.navigation_melodies,
@@ -44,7 +55,61 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupWithNavController(navView, navController);
+
+        initApp();
+
+
+        handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                Log.d(TAG, "handleMessage: " + msg.what);
+                switch (msg.what) {
+                    case DB_MELODY_LOAD:
+                        // TODO:
+                        break;
+                    case DB_SAVED_MIX_LOAD:
+                        // TODO
+                        break;
+                    case DB_MELODY_INSERT:
+                        // TODO
+                        break;
+                    case DB_SAVED_MIX_INSERT:
+                        // TODO
+                        break;
+                    case DB_MELODY_DELETE:
+                        // TODO
+                        break;
+                    case DB_MELODY_TRUNCATE:
+                        // TODO
+                        break;
+                    case DB_SAVED_MIX_TRUNCATE:
+                        // TODO
+                        break;
+                }
+            }
+        };
+    }
+
+    public void execute(Runnable runnable){
+        threadPool.execute(runnable);
+    }
+
+    public Handler getHandler(){
+        return handler;
+    }
+
+    private void initApp(){
+        DatabaseManager.initDatabaseManager(this);
+
+        SharedPreferences appSettingsPref = getSharedPreferences("AppSettingsPrefs", 0);
+        boolean isNightMode = appSettingsPref.getBoolean("NightMode", false);
+
+        if(isNightMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
     public void playMix(String mixName) {
