@@ -5,10 +5,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity(tableName = "MixMelody",
         foreignKeys = {@ForeignKey(entity = Melody.class,
@@ -16,10 +13,10 @@ import java.util.List;
                 childColumns = "melody_id",
                 onDelete = ForeignKey.CASCADE)
         })
-public class MixMelody implements Serializable{
+public class MixMelody implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    public int id;
 
     @ColumnInfo(name = "name")
     private final String name;
@@ -28,7 +25,6 @@ public class MixMelody implements Serializable{
     private final int melodyId;
 
     public MixMelody(String name, int melodyId) {
-
         this.name = name;
         this.melodyId = melodyId;
 
@@ -42,7 +38,7 @@ public class MixMelody implements Serializable{
         return name;
     }
 
-    public int getMelodyId(){
+    public int getMelodyId() {
         return melodyId;
     }
 }
