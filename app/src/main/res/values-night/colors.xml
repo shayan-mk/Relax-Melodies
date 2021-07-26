@@ -8,8 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="textColor">#070404</color>
-    <color name="buttonColor">#2196F3</color>
-    <color name="textBoxColor">#F8F8FA</color>
-    <color name="backgroundColor">#7794CA</color>
+    <color name="textColor">#FCFCFC</color>
+    <color name="buttonColor">#351010</color>
+    <color name="textBoxColor">#421F1F</color>
+    <color name="backgroundColor">#653030</color>
+
+
 </resources>
