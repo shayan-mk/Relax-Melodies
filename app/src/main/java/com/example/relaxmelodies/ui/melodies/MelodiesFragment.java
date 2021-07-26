@@ -4,17 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.GridView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.relaxmelodies.database.Melody;
 import com.example.relaxmelodies.databinding.FragmentMelodiesBinding;
 
-public class MelodiesFragment extends Fragment {
+import java.util.List;
+
+public class MelodiesFragment extends Fragment implements MelodiesAdapter.ItemActionListener {
 
     private MelodiesViewModel melodiesViewModel;
     private FragmentMelodiesBinding binding;
@@ -27,11 +29,14 @@ public class MelodiesFragment extends Fragment {
         binding = FragmentMelodiesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textMelodies;
-        melodiesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        GridView gridView = binding.gridView;
+        MelodiesAdapter adapter = new MelodiesAdapter(this);
+        gridView.setAdapter(adapter);
+
+        melodiesViewModel.getMelodies().observe(getViewLifecycleOwner(), new Observer<List<Melody>>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onChanged(List<Melody> melodies) {
+                adapter.submitList(melodies);
             }
         });
         return root;
@@ -41,5 +46,10 @@ public class MelodiesFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onItemClick(int ID) {
+        // TODO: play melody
     }
 }
