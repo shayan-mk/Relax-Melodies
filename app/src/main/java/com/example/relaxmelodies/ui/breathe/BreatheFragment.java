@@ -1,5 +1,6 @@
 package com.example.relaxmelodies.ui.breathe;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,10 @@ public class BreatheFragment extends Fragment {
     private View outerCircleView;
     private View innerCircleView;
 
+    private int inhaleDuration;
+    private int holdDuration;
+    private int exhaleDuration;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,11 +67,12 @@ public class BreatheFragment extends Fragment {
 
     private void prepareAnimation(){
 
+        SharedPreferences appSettingsPref = getActivity().getSharedPreferences("AppSettingsPrefs", 0);
+        inhaleDuration = appSettingsPref.getInt("InhaleDuration", 6000);
+        exhaleDuration = appSettingsPref.getInt("ExhaleDuration", 6000);
+        holdDuration = appSettingsPref.getInt("HoldDuration", 6000);
 
-        int inhaleDuration = breatheViewModel.getInhaleDuration();
-        int exhaleDuration = breatheViewModel.getExhaleDuration();
-        
-        
+
         //Inhale - make large
         animationInhaleText = AnimationUtils.loadAnimation((MainActivity)getActivity(), R.anim.zoomin);
         animationInhaleText.setFillAfter(true);
@@ -103,7 +109,6 @@ public class BreatheFragment extends Fragment {
             //Log.d(TAG, "inhale animation end");
             statusText.setText("HOLD");
             MainActivity mainActivity = (MainActivity)getActivity();
-            int holdDuration = breatheViewModel.getHoldDuration();
             mainActivity.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -130,7 +135,6 @@ public class BreatheFragment extends Fragment {
             //Log.d(TAG, "inhale animation end");
             statusText.setText("HOLD");
             MainActivity mainActivity = (MainActivity)getActivity();
-            int holdDuration = breatheViewModel.getHoldDuration();
             mainActivity.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
