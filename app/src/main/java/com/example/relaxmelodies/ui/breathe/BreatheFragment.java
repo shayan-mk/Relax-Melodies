@@ -23,9 +23,13 @@ public class BreatheFragment extends Fragment {
     private BreatheViewModel breatheViewModel;
     private FragmentBreatheBinding binding;
 
+    private TextView statusText;
+
     private Animation animationInhaleText;
-    private Animation animationHoldText;
     private Animation animationExhaleText;
+
+    private Animation animationInhaleInnerCircle;
+    private Animation animationExhaleInnerCircle;
 
     private View outerCircleView;
     private View innerCircleView;
@@ -57,13 +61,88 @@ public class BreatheFragment extends Fragment {
 
 
     private void prepareAnimation(){
+
+
         int inhaleDuration = breatheViewModel.getInhaleDuration();
         int exhaleDuration = breatheViewModel.getExhaleDuration();
         
         
         //Inhale - make large
         animationInhaleText = AnimationUtils.loadAnimation((MainActivity)getActivity(), R.anim.zoomin);
-        
-        
+        animationInhaleText.setFillAfter(true);
+        animationInhaleText.setDuration(inhaleDuration);
+        animationInhaleText.setAnimationListener(inhaleAnimationListener);
+
+        animationInhaleInnerCircle = AnimationUtils.loadAnimation((MainActivity)getActivity(), R.anim.zoomin);
+        animationInhaleInnerCircle.setFillAfter(true);
+        animationInhaleInnerCircle.setDuration(inhaleDuration);
+        animationInhaleInnerCircle.setAnimationListener(inhaleAnimationListener);
+
+        //Inhale - make small
+        animationExhaleText = AnimationUtils.loadAnimation((MainActivity)getActivity(), R.anim.zoomout);
+        animationExhaleText.setFillAfter(true);
+        animationExhaleText.setDuration(exhaleDuration);
+        animationExhaleText.setAnimationListener(exhaleAnimationListener);
+
+        animationExhaleInnerCircle = AnimationUtils.loadAnimation((MainActivity)getActivity(), R.anim.zoomout);
+        animationExhaleInnerCircle.setFillAfter(true);
+        animationExhaleInnerCircle.setDuration(exhaleDuration);
+        animationExhaleInnerCircle.setAnimationListener(exhaleAnimationListener);
+
+
     }
+
+    private Animation.AnimationListener inhaleAnimationListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            //Log.d(TAG, "inhale animation end");
+            statusText.setText("HOLD");
+            MainActivity mainActivity = (MainActivity)getActivity();
+            int holdDuration = breatheViewModel.getHoldDuration();
+            mainActivity.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    statusText.setText("EXHALE");
+                    statusText.startAnimation(animationExhaleText);
+                    innerCircleView.startAnimation(animationExhaleInnerCircle);
+                }
+            }, holdDuration);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+        }
+    };
+
+    private Animation.AnimationListener exhaleAnimationListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            //Log.d(TAG, "inhale animation end");
+            statusText.setText("HOLD");
+            MainActivity mainActivity = (MainActivity)getActivity();
+            int holdDuration = breatheViewModel.getHoldDuration();
+            mainActivity.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    statusText.setText("INHALE");
+                    statusText.startAnimation(animationInhaleText);
+                    innerCircleView.startAnimation(animationInhaleInnerCircle);
+                }
+            }, holdDuration);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+        }
+    };
 }
