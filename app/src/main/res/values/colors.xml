@@ -12,6 +12,31 @@
     <color name="buttonColor">#2196F3</color>
     <color name="textBoxColor">#F8F8FA</color>
     <color name="backgroundColor">#7794CA</color>
-    <color name="colorAccent">#F44336</color>
-    <color name="colorPrimary">#F44336</color>
+
+    <color name="surface">@android:color/background_light</color>
+    <color name="elevatedSurface">@android:color/background_light</color>
+
+    <color name="colorPrimary">#327eae</color>
+    <color name="colorPrimaryDark">#3d3e40</color>
+    <color name="colorAccent">#d35400</color>
+    <color name="colorError">#fdcfbb</color>
+
+    <color name="colorSelected">#dadada</color>
+    <color name="colorFavorite">#e17055</color>
+
+    <color name="itemTitle">#222222</color>
+
+    <color name="controlForeground">@color/colorPrimary</color>
+    <color name="controlColor">@color/colorPrimary</color>
+    <color name="controlAccent">#22648E</color>
+
+    <color name="whiteWhileLight">#ffffff</color>
+    <color name="blackWhileLight">#000000</color>
+
+    <color name="current">#dfecf5</color>
+    <color name="downloaded">@color/colorPrimary</color>
+    <color name="cached">#999999</color>
+
+    <color name="ripple">#c2def0</color>
+
 </resources>
