@@ -39,6 +39,11 @@ public class BreatheFragment extends Fragment {
     private int holdDuration;
     private int exhaleDuration;
 
+    private final String INHALE_TEXT = "Inhale";
+    private final String EXHALE_TEXT = "Exhale";
+    private final String HOLD_TEXT = "Hold";
+
+    private final int DEFAULT_TIME_UNIT = 3000;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +52,16 @@ public class BreatheFragment extends Fragment {
 
         binding = FragmentBreatheBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        outerCircleView = root.findViewById(R.id.view_circle_outer);
+        innerCircleView = root.findViewById(R.id.view_circle_inner);
+
+        statusText = root.findViewById(R.id.txt_status);
+        statusText.setText(INHALE_TEXT);
+
+        prepareAnimation();
+        statusText.startAnimation(animationInhaleText);
+        innerCircleView.startAnimation(animationInhaleInnerCircle);
 
         final TextView textView = binding.textBreathe;
         breatheViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -68,9 +83,9 @@ public class BreatheFragment extends Fragment {
     private void prepareAnimation(){
 
         SharedPreferences appSettingsPref = getActivity().getSharedPreferences("AppSettingsPrefs", 0);
-        inhaleDuration = appSettingsPref.getInt("InhaleDuration", 6000);
-        exhaleDuration = appSettingsPref.getInt("ExhaleDuration", 6000);
-        holdDuration = appSettingsPref.getInt("HoldDuration", 6000);
+        inhaleDuration = appSettingsPref.getInt("InhaleDuration", DEFAULT_TIME_UNIT);
+        exhaleDuration = appSettingsPref.getInt("ExhaleDuration", DEFAULT_TIME_UNIT);
+        holdDuration = appSettingsPref.getInt("HoldDuration", DEFAULT_TIME_UNIT);
 
 
         //Inhale - make large
@@ -107,12 +122,12 @@ public class BreatheFragment extends Fragment {
         @Override
         public void onAnimationEnd(Animation animation) {
             //Log.d(TAG, "inhale animation end");
-            statusText.setText("HOLD");
+            statusText.setText(HOLD_TEXT);
             MainActivity mainActivity = (MainActivity)getActivity();
             mainActivity.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    statusText.setText("EXHALE");
+                    statusText.setText(EXHALE_TEXT);
                     statusText.startAnimation(animationExhaleText);
                     innerCircleView.startAnimation(animationExhaleInnerCircle);
                 }
@@ -133,12 +148,12 @@ public class BreatheFragment extends Fragment {
         @Override
         public void onAnimationEnd(Animation animation) {
             //Log.d(TAG, "inhale animation end");
-            statusText.setText("HOLD");
+            statusText.setText(HOLD_TEXT);
             MainActivity mainActivity = (MainActivity)getActivity();
             mainActivity.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    statusText.setText("INHALE");
+                    statusText.setText(INHALE_TEXT);
                     statusText.startAnimation(animationInhaleText);
                     innerCircleView.startAnimation(animationInhaleInnerCircle);
                 }
