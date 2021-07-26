@@ -13,5 +13,29 @@
     <color name="textBoxColor">#421F1F</color>
     <color name="backgroundColor">#653030</color>
 
+    <color name="surface">#121212</color>
+    <color name="elevatedSurface">#191919</color>
+
+    <color name="colorPrimary">#283f4e</color>
+    <color name="colorAccent">#3282b8</color>
+
+    <color name="colorSelected">#525252</color>
+    <color name="colorFavorite">#eba999</color>
+
+    <color name="itemTitle">#abffffff</color>
+
+    <color name="controlForeground">#caffffff</color>
+    <color name="controlColor">#77a8c7</color>
+    <color name="controlAccent">#304A5A</color>
+
+    <color name="whiteWhileLight">#000000</color>
+    <color name="blackWhileLight">#ffffff</color>
+
+    <color name="current">#1f2e38</color>
+    <color name="downloaded">@color/controlColor</color>
+    <color name="cached">#aeaeae</color>
+
+    <color name="ripple">#283f4e</color>
+
 
 </resources>

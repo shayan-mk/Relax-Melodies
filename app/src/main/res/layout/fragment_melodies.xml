@@ -9,6 +9,7 @@
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:id="@+id/grid_view"
         android:numColumns="auto_fit"
         android:columnWidth="100dp"

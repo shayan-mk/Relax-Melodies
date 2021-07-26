@@ -13,7 +13,7 @@ import com.example.relaxmelodies.databinding.SavedMixItemBinding;
 
 import org.jetbrains.annotations.NotNull;
 
-public class SavedMixesAdapter extends ListAdapter<Mix,SavedMixesAdapter.MixViewHolder> {
+public class SavedMixesAdapter extends ListAdapter<Mix, SavedMixesAdapter.MixViewHolder> {
 
     ItemActionListener listener;
 
@@ -71,6 +71,7 @@ public class SavedMixesAdapter extends ListAdapter<Mix,SavedMixesAdapter.MixView
 
     public interface ItemActionListener {
         void onItemClick(String mixName);
+
         void onItemDelete(String mixName);
     }
 

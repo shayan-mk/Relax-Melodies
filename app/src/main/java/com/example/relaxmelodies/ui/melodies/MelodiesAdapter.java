@@ -14,22 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MelodiesAdapter extends BaseAdapter {
+    private static final String TAG = MelodiesAdapter.class.getName();
 
     private List<Melody> melodies;
-    private ItemActionListener listener;
 
-    public MelodiesAdapter(ItemActionListener listener) {
+    public MelodiesAdapter() {
         this.melodies = new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-       return melodies.size();
+       return melodies.size() * 2;
     }
 
     @Override
     public Object getItem(int position) {
-        return melodies.get(position);
+        if (position % 2 != 0) return null;
+
+        return melodies.get(position / 2);
     }
 
     @Override
@@ -42,14 +44,13 @@ public class MelodiesAdapter extends BaseAdapter {
 
         MelodyItemBinding binding = MelodyItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
-        ImageView image= binding.iconimage;
-        TextView textView= binding.textdata;
-        Melody melody = melodies.get(position);
-
-        image.setImageResource(melody.getIconResource());
-        textView.setText(melody.getName());
-
-        convertView.setOnClickListener(view -> listener.onItemClick(melody.ID));
+        ImageView image= binding.iconImage;
+        TextView textView= binding.textData;
+        if (position % 2 == 0) {
+            Melody melody = melodies.get(position / 2);
+            image.setImageResource(melody.getIconResource());
+            textView.setText(melody.getName());
+        }
 
         return binding.getRoot();
     }
@@ -57,9 +58,5 @@ public class MelodiesAdapter extends BaseAdapter {
     public void submitList(List<Melody> melodies) {
         this.melodies = new ArrayList<>(melodies);
         notifyDataSetChanged();
-    }
-
-    public interface ItemActionListener {
-        void onItemClick(int ID);
     }
 }

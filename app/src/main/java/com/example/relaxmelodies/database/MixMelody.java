@@ -2,17 +2,11 @@ package com.example.relaxmelodies.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = "MixMelody",
-        foreignKeys = {@ForeignKey(entity = Melody.class,
-                parentColumns = "ID",
-                childColumns = "melody_id",
-                onDelete = ForeignKey.CASCADE)
-        })
+@Entity(tableName = "MixMelody")
 public class MixMelody implements Serializable {
 
     @PrimaryKey(autoGenerate = true)

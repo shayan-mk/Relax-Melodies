@@ -2,50 +2,53 @@ package com.example.relaxmelodies;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import com.example.relaxmelodies.database.Melody;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MelodyManager {
 
+    private static final String TAG = MelodyManager.class.getName();
     private final Context context;
     private final Map<Integer, MediaPlayer> mediaPlayers;
 
 
-    public MelodyManager(Context context, List<Melody> melodies) {
+    public MelodyManager(Context context) {
         this.context = context;
         mediaPlayers = new HashMap<>();
-        initMediaPlayers(melodies);
+        initMediaPlayers();
     }
 
-    public void initMediaPlayers(List<Melody> melodies) {
-        for (Melody melody : melodies) {
+    public void initMediaPlayers() {
+        for (Melody melody : Melody.getAllMelodies()) {
             MediaPlayer mediaPlayer = MediaPlayer.create(context, melody.getResourceId());
-            mediaPlayers.put(melody.ID, mediaPlayer);
+//            mediaPlayer.release();
+            Log.d(TAG, "initMediaPlayers: id " + melody.getId() + " created");
+            mediaPlayers.put(melody.getId(), mediaPlayer);
         }
     }
 
-    public void _internalPlayMelody(int ID) {
-        MediaPlayer mediaPlayer = mediaPlayers.get(ID);
+    public void _internalPlayMelody(int id) {
+        MediaPlayer mediaPlayer = mediaPlayers.get(id);
 
-        try {
-            if (mediaPlayer != null) {
-                if (!mediaPlayer.isPlaying()) {
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                }
+        if (mediaPlayer != null) {
+            if (!mediaPlayer.isPlaying()) {
+                Log.d(TAG, "_internalPlayMelody: " + id + " preparing");
+//                    mediaPlayer.prepare();
+                Log.d(TAG, "_internalPlayMelody: " + id + " starting");
+                mediaPlayer.start();
+                mediaPlayer.setLooping(true);
+                Log.d(TAG, "_internalPlayMelody: " + id + " started");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    public void  _internalStopMelody(int ID) {
-        MediaPlayer mediaPlayer = mediaPlayers.get(ID);
+    public void  _internalStopMelody(int id) {
+        MediaPlayer mediaPlayer = mediaPlayers.get(id);
 
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
@@ -72,15 +75,15 @@ public class MelodyManager {
         };
     }
 
-    public Runnable playMelody(int ID) {
+    public Runnable playMelody(int id) {
         return () -> {
-            _internalPlayMelody(ID);
+            _internalPlayMelody(id);
         };
     }
 
-    public Runnable stopMelody(int ID) {
+    public Runnable stopMelody(int id) {
         return () -> {
-            _internalStopMelody(ID);
+            _internalStopMelody(id);
         };
     }
 
