@@ -12,4 +12,6 @@
     <color name="buttonColor">#2196F3</color>
     <color name="textBoxColor">#F8F8FA</color>
     <color name="backgroundColor">#7794CA</color>
+    <color name="colorAccent">#F44336</color>
+    <color name="colorPrimary">#F44336</color>
 </resources>
