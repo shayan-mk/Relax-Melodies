@@ -21,34 +21,34 @@ public class DatabaseManager {
     private static RoomDB database;
     private static DatabaseManager databaseManager = null;
 
-    private synchronized void insertMelody(Melody melody) {
+    /*private synchronized void insertMelody(Melody melody) {
         database.mainDao().insert(melody);
-    }
+    }*/
 
     private synchronized void insertMixMelody(MixMelody mixMelody) {
         database.mainDao().insert(mixMelody);
     }
 
-    private synchronized void deleteMelody(Melody melody) {
+    /*private synchronized void deleteMelody(Melody melody) {
         database.mainDao().delete(melody);
-    }
+    }*/
 
     private synchronized void deleteSavedMix(String mixName) {
         database.mainDao().delete(mixName);
     }
 
-    private synchronized void truncateMelodyTable() {
+    /*private synchronized void truncateMelodyTable() {
         database.mainDao().deleteAllMelodies();
-    }
+    }*/
 
     private synchronized void truncateMixMelodyTable() {
         database.mainDao().deleteAllSavedMixes();
     }
 
-    public List<Melody> loadMelodies() {
+    /*public List<Melody> loadMelodies() {
         Log.d(TAG, "loadMelodies: "+ database);
         return database.mainDao().getAllMelodies();
-    }
+    }*/
 
     private LiveData<List<MixMelody>> loadSavedMixes() {
         return database.mainDao().getAllSavedMixes();
@@ -71,7 +71,7 @@ public class DatabaseManager {
         database = RoomDB.getInstance(context);
     }
 
-    public Runnable loadMelodyList(Handler handler) {
+    /*public Runnable loadMelodyList(Handler handler) {
         return () -> {
             List<Melody> melodyList = loadMelodies();
             Message message = new Message();
@@ -80,9 +80,9 @@ public class DatabaseManager {
             message.obj = melodyList;
             handler.sendMessage(message);
         };
-    }
+    }*/
 
-    public Runnable insertMelody(Melody melody, Handler handler) {
+    /*public Runnable insertMelody(Melody melody, Handler handler) {
         return () -> {
             insertMelody(melody);
             Message message = new Message();
@@ -90,20 +90,20 @@ public class DatabaseManager {
             message.arg1 = 1;
             handler.sendMessage(message);
         };
-    }
+    }*/
 
-    public Runnable deleteMelody(Melody melody, Handler handler) {
-        return () -> {
-            deleteMelody(melody);
-            Message message = new Message();
-            message.what = MainActivity.DB_MELODY_DELETE;
-            message.arg1 = 1;
-            message.obj = melody;
-            handler.sendMessage(message);
-        };
-    }
+        /*public Runnable deleteMelody(Melody melody, Handler handler) {
+            return () -> {
+                deleteMelody(melody);
+                Message message = new Message();
+                message.what = MainActivity.DB_MELODY_DELETE;
+                message.arg1 = 1;
+                message.obj = melody;
+                handler.sendMessage(message);
+            };
+        }*/
 
-    public Runnable truncateMelodyTable(Handler handler) {
+    /*public Runnable truncateMelodyTable(Handler handler) {
         return () -> {
             truncateMelodyTable();
             Message message = new Message();
@@ -111,7 +111,7 @@ public class DatabaseManager {
             message.arg1 = 1;
             handler.sendMessage(message);
         };
-    }
+    }*/
 
     public Runnable insertMix(Mix mix, Handler handler) {
         return () -> {

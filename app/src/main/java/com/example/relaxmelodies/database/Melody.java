@@ -7,22 +7,22 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = "Melody")
+//@Entity(tableName = "Melody")
 public class Melody implements Serializable {
 
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     public int ID;
 
-    @ColumnInfo(name = "name")
+    //@ColumnInfo(name = "name")
     private final String name;
 
-    @ColumnInfo(name = "duration")
+    //@ColumnInfo(name = "duration")
     private final double duration;
 
-    @ColumnInfo(name = "fileAddress")
+    //@ColumnInfo(name = "fileAddress")
     private final int resourceId;
 
-    @ColumnInfo(name = "iconAddress")
+    //@ColumnInfo(name = "iconAddress")
     private final int iconResource;
 
     public Melody(String name, double duration, int resourceId, int iconResource) {
