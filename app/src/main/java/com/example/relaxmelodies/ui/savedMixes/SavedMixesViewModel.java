@@ -4,16 +4,19 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.relaxmelodies.database.Mix;
+
+import java.util.List;
+
 public class SavedMixesViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private MutableLiveData<List<Mix>> mSavedMixes;
 
     public SavedMixesViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is savedMixes fragment");
+        // TODO: set saved mixes from DB
+//        mSavedMixes =
     }
-
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<Mix>> getSavedMixes() {
+        return mSavedMixes;
     }
 }
