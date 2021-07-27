@@ -15,24 +15,37 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.fragment_settings, rootKey);
+        updateDurationSummary("inhale_duration");
+        updateDurationSummary("exhale_duration");
+        updateDurationSummary("hold_duration");
+
+        findPreference("truncate").setOnPreferenceClickListener(preference -> {
+            ((MainActivity)getActivity()).truncateSavedMixes();
+            return true;
+        });
+
+        findPreference("restore_settings").setOnPreferenceClickListener(preference -> {
+            getActivity().getSharedPreferences("AppSettingsPrefs", 0).edit().clear().apply();
+            return true;
+        });
 
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        SharedPreferences appSettingsPrefs = getActivity().getSharedPreferences("AppSettingsPrefs", 0);
+        String value = sharedPreferences.getString(key, "");
+        appSettingsPrefs.edit().putString(key, value).apply();
 
         switch (key) {
             case "inhale_duration":
             case "exhale_duration":
             case "hold_duration":
-                Preference preference = findPreference(key);
-                preference.setSummary(sharedPreferences.getInt(key, 3000));
+                updateDurationSummary(key);
                 break;
             case "night_mode":
                 ((MainActivity)getActivity()).setNightMode();
                 break;
-            case "truncate":
-                ((MainActivity)getActivity()).truncateSavedMixes();
         }
     }
 
@@ -47,5 +60,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onPause() {
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
+    }
+
+    private void updateDurationSummary(String key) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AppSettingsPrefs", 0);
+        Preference preference = findPreference(key);
+        String summary = "Current duration: "+ sharedPreferences.getString(key, "3000").charAt(0) + "s (tap to change)";
+        preference.setSummary(summary);
+
     }
 }

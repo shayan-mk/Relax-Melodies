@@ -27,7 +27,6 @@ import com.example.relaxmelodies.ui.savedMixes.SavedMixesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         databaseManager = new DatabaseManager(this);
         melodyManager = new MelodyManager(this);
+        execute(melodyManager.initMediaPlayers());
         threadPool = Executors.newFixedThreadPool(10);
         handler = getNewHandler();
         savedMixesViewModel =
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences appSettingsPref = getSharedPreferences("AppSettingsPrefs", 0);
         String nightModeState = appSettingsPref.getString("night_mode", "");
 
+        Log.d(TAG, "setNightMode: " + nightModeState);
         switch (nightModeState) {
             case "OFF":
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

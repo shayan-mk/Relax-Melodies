@@ -19,7 +19,11 @@
         <Preference
             android:key="truncate"
             android:summary="Tap to delete all saved mixes."
-            android:title="Delete all data"/>
+            android:title="Delete all Mix data"/>
+        <Preference
+            android:key="restore_settings"
+            android:summary="Tap to remove all settings prefrences."
+            android:title="Restore Settings"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Breathe">

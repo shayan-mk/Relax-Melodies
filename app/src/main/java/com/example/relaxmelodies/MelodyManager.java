@@ -25,22 +25,18 @@ public class MelodyManager {
         this.context = context;
         mediaPlayers = new HashMap<>();
         nowPlaying = new ArrayList<>();
-        initMediaPlayers();
         isPlaying = false;
     }
 
-    public void initMediaPlayers() {
-        for (Melody melody : Melody.getAllMelodies()) {
-            MediaPlayer mediaPlayer = MediaPlayer.create(context, melody.getResourceId());
-//            mediaPlayer.release();
-            Log.d(TAG, "initMediaPlayers: id " + melody.getId() + " created");
-            mediaPlayers.put(melody.getId(), mediaPlayer);
-        }
+    public Runnable initMediaPlayers() {
+        return () -> {
+            for (Melody melody : Melody.getAllMelodies()) {
+                MediaPlayer mediaPlayer = MediaPlayer.create(context, melody.getResourceId());
+                Log.d(TAG, "initMediaPlayers: id " + melody.getId() + " created");
+                mediaPlayers.put(melody.getId(), mediaPlayer);
+            }
+        };
     }
-
-    /*private void updateNowPlaying(List<Integer> list) {
-        nowPlaying = new ArrayList<>(list);
-    }*/
 
     public void _internalSelectMelody(int id) {
         if(!isPlaying)
@@ -139,5 +135,7 @@ public class MelodyManager {
         return nowPlaying;
     }
 
-
+    public Boolean getPlaying() {
+        return isPlaying;
+    }
 }

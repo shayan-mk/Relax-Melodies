@@ -43,7 +43,7 @@ public class BreatheFragment extends Fragment {
     private final String EXHALE_TEXT = "Exhale";
     private final String HOLD_TEXT = "Hold";
 
-    private final int DEFAULT_TIME_UNIT = 3000;
+    private final String  DEFAULT_TIME_UNIT = "3000";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -83,9 +83,9 @@ public class BreatheFragment extends Fragment {
     private void prepareAnimation(){
 
         SharedPreferences appSettingsPref = getActivity().getSharedPreferences("AppSettingsPrefs", 0);
-        inhaleDuration = appSettingsPref.getInt("inhale_duration", DEFAULT_TIME_UNIT);
-        exhaleDuration = appSettingsPref.getInt("exhale_duration", DEFAULT_TIME_UNIT);
-        holdDuration = appSettingsPref.getInt("hold_duration", DEFAULT_TIME_UNIT);
+        inhaleDuration = Integer.parseInt(appSettingsPref.getString("inhale_duration", DEFAULT_TIME_UNIT));
+        exhaleDuration = Integer.parseInt(appSettingsPref.getString("exhale_duration", DEFAULT_TIME_UNIT));
+        holdDuration = Integer.parseInt(appSettingsPref.getString("hold_duration", DEFAULT_TIME_UNIT));
 
 
         //Inhale - make large
