@@ -4,6 +4,8 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.relaxmelodies.database.Melody;
 
 import java.util.ArrayList;
@@ -16,13 +18,14 @@ public class MelodyManager {
     private static final String TAG = MelodyManager.class.getName();
     private final Context context;
     private final Map<Integer, MediaPlayer> mediaPlayers;
-    private List<Integer> nowPlaying;
+    private final MutableLiveData<List<Integer>> nowPlaying;
 
 
     public MelodyManager(Context context) {
         this.context = context;
         mediaPlayers = new HashMap<>();
-        nowPlaying = new ArrayList<>();
+        nowPlaying = new MutableLiveData<>();
+        nowPlaying.setValue(new ArrayList<>());
         initMediaPlayers();
     }
 
@@ -35,6 +38,10 @@ public class MelodyManager {
         }
     }
 
+    private void updateNowPlaying(List<Integer> list) {
+        nowPlaying.setValue(list);
+    }
+
     public void _internalPlayMelody(int id) {
         MediaPlayer mediaPlayer = mediaPlayers.get(id);
 
@@ -43,7 +50,9 @@ public class MelodyManager {
 //                    mediaPlayer.prepare();
                 mediaPlayer.start();
                 mediaPlayer.setLooping(true);
-                nowPlaying.add(id);
+                List<Integer> newList = nowPlaying.getValue();
+                newList.add(id);
+                updateNowPlaying(newList);
             }
         }
     }
@@ -55,7 +64,9 @@ public class MelodyManager {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
                 mediaPlayer.release();
-                nowPlaying.remove(id);
+                List<Integer> newList = nowPlaying.getValue();
+                newList.remove(id);
+                updateNowPlaying(newList);
             }
         }
     }
@@ -70,7 +81,7 @@ public class MelodyManager {
 
     public Runnable releaseAll() {
         return () -> {
-            for (Integer melodyId : nowPlaying) {
+            for (Integer melodyId : nowPlaying.getValue()) {
                 _internalStopMelody(melodyId);
             }
         };
