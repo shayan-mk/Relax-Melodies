@@ -1,6 +1,7 @@
 package com.example.relaxmelodies.ui.currentMix;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.example.relaxmelodies.databinding.PartialNowPlayingBinding;
 import com.example.relaxmelodies.ui.savedMixes.SaveMixDialog;
 
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class CurrentMixFragment extends Fragment implements CurrentMixAdapter.ItemActionListener{
     private PartialNowPlayingBinding binding;
@@ -31,8 +34,7 @@ public class CurrentMixFragment extends Fragment implements CurrentMixAdapter.It
         recyclerView.setAdapter(adapter);
 //        adapter.submitList(((MainActivity)getActivity()).getCurrentMelodies());
 
-        binding.saveMixButton.setOnClickListener(v ->
-                new SaveMixDialog(((MainActivity)getActivity()).getNowPlaying()));
+        binding.saveMixButton.setOnClickListener(v -> openDialogBox());
 
         return root;
     }
@@ -51,6 +53,11 @@ public class CurrentMixFragment extends Fragment implements CurrentMixAdapter.It
     @Override
     public void onItemDelete(Mix mix) {
 
+    }
+
+    private void openDialogBox(){
+        Log.d(TAG, "openDialogBox: " + "ooooooooooooooooooooooooooo");
+        new SaveMixDialog(((MainActivity)getActivity()).getNowPlaying());
     }
 
     // play and pause
