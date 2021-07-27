@@ -26,6 +26,7 @@ import com.example.relaxmelodies.ui.savedMixes.SaveMixDialog;
 import com.example.relaxmelodies.ui.savedMixes.SavedMixesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -145,7 +146,11 @@ public class MainActivity extends AppCompatActivity {
                 switch (msg.what) {
 
                     case DB_SAVED_MIX_LOAD:
-                        List<Mix> savedMixes = Arrays.asList((Mix[]) msg.obj);
+                        // List<Mix> savedMixes = Arrays.asList((Mix[]) msg.obj);
+                        List<Mix> savedMixes = new ArrayList<>();
+                        for (Mix mix : ((Mix[]) msg.obj)) {
+                            savedMixes.add(mix);
+                        }
                         savedMixesViewModel.updateSavedMixes(savedMixes);
                         break;
                     case DB_SAVED_MIX_INSERT:

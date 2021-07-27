@@ -1,5 +1,7 @@
 package com.example.relaxmelodies.ui.savedMixes;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,6 +13,7 @@ import java.util.List;
 
 public class SavedMixesViewModel extends ViewModel {
 
+    private static final String TAG = SavedMixesViewModel.class.getName();
     private final MutableLiveData<List<Mix>> mSavedMixes;
     private List<Mix> cacheSavedMixes;
 
@@ -19,13 +22,14 @@ public class SavedMixesViewModel extends ViewModel {
     }
 
     public void updateSavedMixes(List<Mix> savedMixes) {
-        cacheSavedMixes = savedMixes;
+        cacheSavedMixes = new ArrayList<>(savedMixes);
         mSavedMixes.setValue(cacheSavedMixes);
     }
 
     public void deleteSavedMix(Mix savedMix){
+        Log.d(TAG, "deleteSavedMix: " + cacheSavedMixes.get(0).getMelody_ids());
         cacheSavedMixes.remove(savedMix);
-        updateSavedMixes(cacheSavedMixes);
+        mSavedMixes.setValue(cacheSavedMixes);
     }
 
     public LiveData<List<Mix>> getSavedMixes() {

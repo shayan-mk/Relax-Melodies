@@ -3,6 +3,7 @@ package com.example.relaxmelodies.database;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.example.relaxmelodies.MainActivity;
 
@@ -40,6 +41,7 @@ public class DatabaseManager {
     public Runnable insertMix(String name, List<Integer> melodyIds, Handler handler) {
         return () -> {
             for (int melody_id : melodyIds) {
+                Log.d(TAG, "insertMix: " + melody_id);
                 insertMixMelody(new MixMelody(name, melody_id));
             }
             Message message = new Message();
