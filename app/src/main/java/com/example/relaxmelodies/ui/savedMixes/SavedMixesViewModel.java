@@ -20,6 +20,12 @@ public class SavedMixesViewModel extends ViewModel {
         mSavedMixes.setValue(savedMixes);
     }
 
+    public void deleteSavedMix(Mix savedMix){
+        List<Mix> newList = mSavedMixes.getValue();
+        newList.remove(savedMix);
+        updateSavedMixes(newList);
+    }
+
     public LiveData<List<Mix>> getSavedMixes() {
         return mSavedMixes;
     }

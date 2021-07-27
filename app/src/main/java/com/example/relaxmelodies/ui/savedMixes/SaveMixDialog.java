@@ -44,7 +44,6 @@ public class SaveMixDialog extends AppCompatDialogFragment {
             String name = editText.getText().toString();
             if(!name.isEmpty()){
                 ((MainActivity)getActivity()).saveMix(name, melodyIds);
-                Toast.makeText(getContext(), "Saved successfully!", Toast.LENGTH_SHORT).show();
                 dismiss();
             } else {
                 Toast.makeText(getContext(), "Enter the name!", Toast.LENGTH_SHORT).show();

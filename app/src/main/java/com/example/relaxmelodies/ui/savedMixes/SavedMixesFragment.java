@@ -78,8 +78,8 @@ public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.It
     }
 
     @Override
-    public void onItemDelete(String mixName) {
-        ((MainActivity)getActivity()).deleteMix(mixName);
+    public void onItemDelete(Mix mix) {
+        ((MainActivity)getActivity()).deleteMix(mix);
     }
 
 

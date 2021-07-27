@@ -49,7 +49,7 @@ public class SavedMixesAdapter extends ListAdapter<Mix, SavedMixesAdapter.MixVie
 
         public void bind(Mix savedMix, ItemActionListener listener) {
             binding.savedMixName.setText(savedMix.getName());
-            binding.savedMixDelete.setOnClickListener(view -> listener.onItemDelete(savedMix.getName()));
+            binding.savedMixDelete.setOnClickListener(view -> listener.onItemDelete(savedMix));
             itemView.setOnClickListener(view -> listener.onItemClick(savedMix.getMelody_ids()));
         }
     }
@@ -74,7 +74,7 @@ public class SavedMixesAdapter extends ListAdapter<Mix, SavedMixesAdapter.MixVie
     public interface ItemActionListener {
         void onItemClick(List<Integer> melodyIds);
 
-        void onItemDelete(String mixName);
+        void onItemDelete(Mix mix);
     }
 
 }

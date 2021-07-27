@@ -7,19 +7,25 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.relaxmelodies.database.DatabaseManager;
+import com.example.relaxmelodies.database.Mix;
 import com.example.relaxmelodies.databinding.ActivityMainBinding;
+import com.example.relaxmelodies.ui.savedMixes.SavedMixesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseManager databaseManager;
     private Handler handler;
     private ExecutorService threadPool;
+    private SavedMixesViewModel savedMixesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         melodyManager = new MelodyManager(this);
         threadPool = Executors.newFixedThreadPool(10);
         handler = getNewHandler();
+        savedMixesViewModel =
+                new ViewModelProvider(this).get(SavedMixesViewModel.class);
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -100,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
         execute(melodyManager.playMix(melodyIds));
     }
 
-    public void deleteMix(String mixName) {
-        execute(databaseManager.deleteMix(mixName, handler));
+    public void deleteMix(Mix mix) {
+        execute(databaseManager.deleteMix(mix, handler));
     }
 
     public void saveMix(String name, List<Integer> melodyIds) {
@@ -116,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
         execute(databaseManager.truncateSavedMixes(handler));
     }
 
+    public void playAnimation(Runnable runnable, long postDelay){
+        handler.postDelayed(runnable, postDelay);
+    }
 
     public void hideSoftKeyboard() {
         InputMethodManager inputMethodManager =
@@ -130,26 +142,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 switch (msg.what) {
-                    case DB_MELODY_LOAD:
-                        // TODO:
-                        break;
+
                     case DB_SAVED_MIX_LOAD:
-                        // TODO
-                        break;
-                    case DB_MELODY_INSERT:
-                        // TODO
+                        List<Mix> savedMixes = Arrays.asList((Mix[]) msg.obj);
+                        savedMixesViewModel.updateSavedMixes(savedMixes);
                         break;
                     case DB_SAVED_MIX_INSERT:
-                        // TODO
-                        break;
-                    case DB_MELODY_DELETE:
-                        // TODO
-                        break;
-                    case DB_MELODY_TRUNCATE:
-                        // TODO
+                        Toast.makeText(MainActivity.this, "Saved successfully!", Toast.LENGTH_SHORT).show();
                         break;
                     case DB_SAVED_MIX_TRUNCATE:
-                        // TODO
+                        Toast.makeText(MainActivity.this, "All mixes are deleted successfully!", Toast.LENGTH_SHORT).show();
+                        break;
+                    case DB_SAVED_MIX_DELETE:
+                        savedMixesViewModel.deleteSavedMix((Mix)msg.obj);
+                        Toast.makeText(MainActivity.this, "Deleted successfully!", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

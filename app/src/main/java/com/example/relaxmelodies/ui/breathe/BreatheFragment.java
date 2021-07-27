@@ -124,7 +124,8 @@ public class BreatheFragment extends Fragment {
             //Log.d(TAG, "inhale animation end");
             statusText.setText(HOLD_TEXT);
             MainActivity mainActivity = (MainActivity)getActivity();
-            mainActivity.getHandler().postDelayed(new Runnable() {
+
+            mainActivity.playAnimation(new Runnable() {
                 @Override
                 public void run() {
                     statusText.setText(EXHALE_TEXT);
@@ -150,7 +151,7 @@ public class BreatheFragment extends Fragment {
             //Log.d(TAG, "inhale animation end");
             statusText.setText(HOLD_TEXT);
             MainActivity mainActivity = (MainActivity)getActivity();
-            mainActivity.getHandler().postDelayed(new Runnable() {
+            mainActivity.playAnimation(new Runnable() {
                 @Override
                 public void run() {
                     statusText.setText(INHALE_TEXT);
