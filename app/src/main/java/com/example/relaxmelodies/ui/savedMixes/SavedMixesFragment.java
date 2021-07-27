@@ -31,6 +31,7 @@ public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.It
                              ViewGroup container, Bundle savedInstanceState) {
         savedMixesViewModel =
                 new ViewModelProvider(getActivity()).get(SavedMixesViewModel.class);
+        ((MainActivity)getActivity()).loadSavedMixes();
 
         binding = FragmentSavedMixesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

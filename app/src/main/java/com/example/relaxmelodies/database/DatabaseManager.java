@@ -44,7 +44,7 @@ public class DatabaseManager {
                 insertMixMelody(new MixMelody(name, melody_id));
             }
             Message message = new Message();
-            message.what = MainActivity.DB_MELODY_INSERT;
+            message.what = MainActivity.DB_SAVED_MIX_INSERT;
             message.arg1 = 1;
             handler.sendMessage(message);
         };
@@ -54,7 +54,7 @@ public class DatabaseManager {
         return () -> {
             deleteSavedMix(mix.getName());
             Message message = new Message();
-            message.what = MainActivity.DB_MELODY_DELETE;
+            message.what = MainActivity.DB_SAVED_MIX_DELETE;
             message.arg1 = 1;
             message.obj = mix;
             handler.sendMessage(message);
@@ -65,7 +65,7 @@ public class DatabaseManager {
         return () -> {
             truncateSavedMixes();
             Message message = new Message();
-            message.what = MainActivity.DB_MELODY_TRUNCATE;
+            message.what = MainActivity.DB_SAVED_MIX_TRUNCATE;
             message.arg1 = 1;
             handler.sendMessage(message);
         };
@@ -84,7 +84,7 @@ public class DatabaseManager {
             Message message = new Message();
             message.what = MainActivity.DB_SAVED_MIX_LOAD;
             message.arg1 = 1;
-            Melody[] mixArr = new Melody[mixes.size()];
+            Mix[] mixArr = new Mix[mixes.size()];
             message.obj = mixes.toArray(mixArr);
             handler.sendMessage(message);
         };
