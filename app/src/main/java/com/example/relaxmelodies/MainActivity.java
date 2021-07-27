@@ -24,7 +24,6 @@ import com.example.relaxmelodies.databinding.ActivityMainBinding;
 import com.example.relaxmelodies.ui.savedMixes.SavedMixesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -128,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
     public void playAnimation(Runnable runnable, long postDelay){
         handler.postDelayed(runnable, postDelay);
     }
+
 
     public void hideSoftKeyboard() {
         InputMethodManager inputMethodManager =

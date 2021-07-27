@@ -75,6 +75,14 @@
                 android:layout_marginEnd="16dp"
                 app:icon="@drawable/play" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_mix_button"
+                style="@style/AppTheme.OutlinedButton"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
+                app:icon="@drawable/ic_home_black_24dp" />
+
         </LinearLayout>
 
     </LinearLayout>
