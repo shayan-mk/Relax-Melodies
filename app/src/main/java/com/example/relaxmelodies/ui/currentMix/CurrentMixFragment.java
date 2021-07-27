@@ -22,10 +22,11 @@ import static android.content.ContentValues.TAG;
 public class CurrentMixFragment extends Fragment implements CurrentMixAdapter.ItemActionListener{
     private PartialNowPlayingBinding binding;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-
+        Log.d(TAG, "onCreateView: " + "Hwlloooooooooooooooooooooooooooo");
         binding = PartialNowPlayingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -34,6 +35,7 @@ public class CurrentMixFragment extends Fragment implements CurrentMixAdapter.It
         recyclerView.setAdapter(adapter);
 //        adapter.submitList(((MainActivity)getActivity()).getCurrentMelodies());
 
+        Log.d(TAG, "onCreateView: " + binding.saveMixButton);
         binding.saveMixButton.setOnClickListener(v -> openDialogBox());
 
         return root;

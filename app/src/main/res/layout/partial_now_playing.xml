@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/backgroundColor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.currentMix.CurrentMixFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_now_playing"
