@@ -95,12 +95,8 @@ public class MainActivity extends AppCompatActivity {
         threadPool.execute(runnable);
     }
 
-    public void playMelody(int id) {
-        execute(melodyManager.playMelody(id));
-    }
-
-    public void stopMelody(int id) {
-        execute(melodyManager.stopMelody(id));
+    public void changePlayingStatus(int id) {
+        execute(melodyManager.changePlayStatus(id));
     }
 
     public void playMix(List<Integer> melodyIds) {

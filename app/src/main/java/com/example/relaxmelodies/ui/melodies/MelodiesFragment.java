@@ -30,7 +30,7 @@ public class MelodiesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position % 2 == 0) {
-                    ((MainActivity) getContext()).playMelody(position / 2  + 1);
+                    ((MainActivity) getContext()).changePlayingStatus(position / 2  + 1);
                 }
             }
         });

@@ -29,7 +29,7 @@ public class CurrentMixFragment extends Fragment implements CurrentMixAdapter.It
         recyclerView.setAdapter(adapter);
 //        adapter.submitList(((MainActivity)getActivity()).getCurrentMelodies());
 
-        binding.saveMixButton.
+        //binding.saveMixButton.
         return root;
     }
 

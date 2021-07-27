@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.relaxmelodies.database.Melody;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,14 +19,13 @@ public class MelodyManager {
     private static final String TAG = MelodyManager.class.getName();
     private final Context context;
     private final Map<Integer, MediaPlayer> mediaPlayers;
-    private final MutableLiveData<List<Integer>> nowPlaying;
+    private List<Integer> nowPlaying;
 
 
     public MelodyManager(Context context) {
         this.context = context;
         mediaPlayers = new HashMap<>();
-        nowPlaying = new MutableLiveData<>();
-        nowPlaying.setValue(new ArrayList<>());
+        nowPlaying = new ArrayList<>();
         initMediaPlayers();
     }
 
@@ -38,21 +38,19 @@ public class MelodyManager {
         }
     }
 
-    private void updateNowPlaying(List<Integer> list) {
-        nowPlaying.setValue(list);
-    }
+    /*private void updateNowPlaying(List<Integer> list) {
+        nowPlaying = new ArrayList<>(list);
+    }*/
 
     public void _internalPlayMelody(int id) {
         MediaPlayer mediaPlayer = mediaPlayers.get(id);
 
         if (mediaPlayer != null) {
             if (!mediaPlayer.isPlaying()) {
-//                    mediaPlayer.prepare();
+
                 mediaPlayer.start();
                 mediaPlayer.setLooping(true);
-                List<Integer> newList = nowPlaying.getValue();
-                newList.add(id);
-                updateNowPlaying(newList);
+                nowPlaying.add(id);
             }
         }
     }
@@ -63,10 +61,19 @@ public class MelodyManager {
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
-                mediaPlayer.release();
-                List<Integer> newList = nowPlaying.getValue();
-                newList.remove(id);
-                updateNowPlaying(newList);
+                try {
+                    mediaPlayer.prepare();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                ArrayList<Integer> newList = new ArrayList<>();
+                for (Integer integer : new ArrayList<>(nowPlaying)) {
+                    if(integer != id){
+                        newList.add(integer);
+                    }
+                }
+                nowPlaying = newList;
             }
         }
     }
@@ -81,23 +88,20 @@ public class MelodyManager {
 
     public Runnable releaseAll() {
         return () -> {
-            for (Integer melodyId : nowPlaying.getValue()) {
+            for (Integer melodyId : nowPlaying) {
                 _internalStopMelody(melodyId);
             }
         };
     }
 
-    public Runnable playMelody(int id) {
+    public Runnable changePlayStatus(int id){
         return () -> {
-            _internalPlayMelody(id);
+            if(nowPlaying.contains(id)){
+                _internalStopMelody(id);
+            }else {
+                _internalPlayMelody(id);
+            }
         };
     }
-
-    public Runnable stopMelody(int id) {
-        return () -> {
-            _internalStopMelody(id);
-        };
-    }
-
 
 }
