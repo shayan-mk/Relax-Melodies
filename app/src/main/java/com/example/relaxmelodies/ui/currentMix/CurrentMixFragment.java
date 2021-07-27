@@ -22,7 +22,7 @@ import static android.content.ContentValues.TAG;
 public class CurrentMixFragment extends Fragment implements CurrentMixAdapter.ItemActionListener{
     private PartialNowPlayingBinding binding;
 
-
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.relaxmelodies.database.Melody;
 
 import java.io.IOException;
@@ -20,6 +18,7 @@ public class MelodyManager {
     private final Context context;
     private final Map<Integer, MediaPlayer> mediaPlayers;
     private List<Integer> nowPlaying;
+    private Boolean isPlaying;
 
 
     public MelodyManager(Context context) {
@@ -27,6 +26,7 @@ public class MelodyManager {
         mediaPlayers = new HashMap<>();
         nowPlaying = new ArrayList<>();
         initMediaPlayers();
+        isPlaying = false;
     }
 
     public void initMediaPlayers() {
@@ -42,20 +42,15 @@ public class MelodyManager {
         nowPlaying = new ArrayList<>(list);
     }*/
 
-    public void _internalPlayMelody(int id) {
-        MediaPlayer mediaPlayer = mediaPlayers.get(id);
+    public void _internalSelectMelody(int id) {
+        if(!isPlaying)
+            isPlaying = true;
+        nowPlaying.add(id);
 
-        if (mediaPlayer != null) {
-            if (!mediaPlayer.isPlaying()) {
-
-                mediaPlayer.start();
-                mediaPlayer.setLooping(true);
-                nowPlaying.add(id);
-            }
-        }
+        play();
     }
 
-    public void  _internalStopMelody(int id) {
+    public void _internalDeselectMelody(int id) {
         MediaPlayer mediaPlayer = mediaPlayers.get(id);
 
         if (mediaPlayer != null) {
@@ -78,28 +73,64 @@ public class MelodyManager {
         }
     }
 
+    private void play(){
+        for (Integer id : nowPlaying) {
+            MediaPlayer mp = mediaPlayers.get(id);
+            if(!mp.isPlaying()){
+                mp.start();
+                mp.setLooping(true);
+            }
+        }
+    }
+
     public Runnable playMix(List<Integer> melodyIds) {
         return () -> {
-            for (Integer melodyId : melodyIds) {
-                _internalPlayMelody(melodyId);
+            isPlaying = true;
+
+            for (Integer id : nowPlaying) {
+                stopMediaPlayer(id);
             }
+            nowPlaying = new ArrayList<>(melodyIds);
+            play();
         };
     }
 
-    public Runnable releaseAll() {
-        return () -> {
-            for (Integer melodyId : nowPlaying) {
-                _internalStopMelody(melodyId);
+    private void stopMediaPlayer(int id){
+        MediaPlayer mp = mediaPlayers.get(id);
+
+        if(mp.isPlaying()){
+            mp.stop();
+            try {
+                mp.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
+    }
+
+
+    public Runnable changeMelodyPlayerStatus(){
+        return () -> {
+            if(isPlaying){
+
+                isPlaying = false;
+                for (Integer id : nowPlaying) {
+                    stopMediaPlayer(id);
+            }
+        }else{
+            isPlaying = true;
+
+            play();
+        }
         };
     }
 
     public Runnable changePlayStatus(int id){
         return () -> {
             if(nowPlaying.contains(id)){
-                _internalStopMelody(id);
+                _internalDeselectMelody(id);
             }else {
-                _internalPlayMelody(id);
+                _internalSelectMelody(id);
             }
         };
     }
@@ -107,4 +138,6 @@ public class MelodyManager {
     public List<Integer> getNowPlaying(){
         return nowPlaying;
     }
+
+
 }

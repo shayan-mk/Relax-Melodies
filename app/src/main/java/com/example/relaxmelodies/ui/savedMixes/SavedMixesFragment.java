@@ -40,8 +40,11 @@ public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.It
     private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
     private static final int REQUEST_CODE = 1234;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+
         savedMixesViewModel =
                 new ViewModelProvider(getActivity()).get(SavedMixesViewModel.class);
         ((MainActivity)getActivity()).loadSavedMixes();
@@ -101,27 +104,6 @@ public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.It
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    private void speak(){
-        //intent to show speech
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say name of the mix");
-
-        //start intent
-        try {
-            //show dialog
-            startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
-            Log.d(TAG, "speak: ");
-        }
-        catch (Exception e){
-            //if there was some error
-            //get message of error and show
-            Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void startVoiceRecognitionActivity()

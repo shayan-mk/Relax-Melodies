@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         initPreferences();
 
+        mainBinding.nowPlayingToggle.setOnClickListener(v -> execute(melodyManager.changeMelodyPlayerStatus()));
         mainBinding.saveMixButton.setOnClickListener(v->openDialogBox());
 
 
