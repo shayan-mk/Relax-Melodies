@@ -25,6 +25,7 @@ import com.example.relaxmelodies.databinding.ActivityMainBinding;
 import com.example.relaxmelodies.ui.savedMixes.SaveMixDialog;
 import com.example.relaxmelodies.ui.savedMixes.SavedMixesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     private ExecutorService threadPool;
     private SavedMixesViewModel savedMixesViewModel;
+    private MaterialButton toggleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
         databaseManager = new DatabaseManager(this);
         melodyManager = new MelodyManager(this);
-        execute(melodyManager.initMediaPlayers());
+
         threadPool = Executors.newFixedThreadPool(10);
         handler = getNewHandler();
+        execute(melodyManager.initMediaPlayers());
         savedMixesViewModel =
                 new ViewModelProvider(this).get(SavedMixesViewModel.class);
 
@@ -75,7 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
         setNightMode();
 
-        mainBinding.nowPlayingToggle.setOnClickListener(v -> execute(melodyManager.changeMelodyPlayerStatus()));
+        toggleButton = mainBinding.nowPlayingToggle;
+        toggleButton.setOnClickListener(v ->
+            execute(melodyManager.changeMelodyPlayerStatus()));
+
         mainBinding.saveMixButton.setOnClickListener(v->openDialogBox());
 
 
@@ -130,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
     public void playAnimation(Runnable runnable, long postDelay){
         handler.postDelayed(runnable, postDelay);
     }
-
 
     public void hideSoftKeyboard() {
         InputMethodManager inputMethodManager =

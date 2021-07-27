@@ -121,7 +121,7 @@
                             android:layout_width="?attr/actionBarSize"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
-                            app:icon="@drawable/play" />
+                            app:icon="@drawable/ic_play_pause" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/save_mix_button"
@@ -129,7 +129,7 @@
                             android:layout_width="?attr/actionBarSize"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="16dp"
-                            app:icon="@drawable/ic_home_black_24dp" />
+                            app:icon="@drawable/ic_save" />
 
                     </LinearLayout>
 
