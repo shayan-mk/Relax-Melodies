@@ -157,4 +157,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
+
+    public List<Integer> getNowPlaying(){
+        return melodyManager.getNowPlaying();
+    }
 }

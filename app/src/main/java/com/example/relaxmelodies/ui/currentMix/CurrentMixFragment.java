@@ -9,8 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.relaxmelodies.MainActivity;
 import com.example.relaxmelodies.database.Mix;
 import com.example.relaxmelodies.databinding.PartialNowPlayingBinding;
+import com.example.relaxmelodies.ui.savedMixes.SaveMixDialog;
 
 import java.util.List;
 
@@ -29,7 +31,9 @@ public class CurrentMixFragment extends Fragment implements CurrentMixAdapter.It
         recyclerView.setAdapter(adapter);
 //        adapter.submitList(((MainActivity)getActivity()).getCurrentMelodies());
 
-        //binding.saveMixButton.
+        binding.saveMixButton.setOnClickListener(v ->
+                new SaveMixDialog(((MainActivity)getActivity()).getNowPlaying()));
+
         return root;
     }
 

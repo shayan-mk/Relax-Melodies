@@ -104,4 +104,7 @@ public class MelodyManager {
         };
     }
 
+    public List<Integer> getNowPlaying(){
+        return nowPlaying;
+    }
 }
