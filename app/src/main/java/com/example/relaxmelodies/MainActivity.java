@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.relaxmelodies.database.DatabaseManager;
 import com.example.relaxmelodies.database.Mix;
 import com.example.relaxmelodies.databinding.ActivityMainBinding;
+import com.example.relaxmelodies.ui.savedMixes.SaveMixDialog;
 import com.example.relaxmelodies.ui.savedMixes.SavedMixesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,14 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
 
     private static final int BASE_MESSAGE_CODE = 1000;
-    public static final int DB_MELODY_LOAD = BASE_MESSAGE_CODE + 1;
-    public static final int DB_SAVED_MIX_LOAD = BASE_MESSAGE_CODE + 2;
-    public static final int DB_MELODY_INSERT = BASE_MESSAGE_CODE + 3;
-    public static final int DB_SAVED_MIX_INSERT = BASE_MESSAGE_CODE + 4;
-    public static final int DB_MELODY_DELETE = BASE_MESSAGE_CODE + 5;
-    public static final int DB_SAVED_MIX_DELETE = BASE_MESSAGE_CODE + 6;
-    public static final int DB_MELODY_TRUNCATE = BASE_MESSAGE_CODE + 7;
-    public static final int DB_SAVED_MIX_TRUNCATE = BASE_MESSAGE_CODE + 8;
+    public static final int DB_SAVED_MIX_LOAD = BASE_MESSAGE_CODE + 1;
+    public static final int DB_SAVED_MIX_INSERT = BASE_MESSAGE_CODE + 2;
+    public static final int DB_SAVED_MIX_DELETE = BASE_MESSAGE_CODE + 3;
+    public static final int DB_SAVED_MIX_TRUNCATE = BASE_MESSAGE_CODE + 4;
 
     private MelodyManager melodyManager;
     private DatabaseManager databaseManager;
@@ -60,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
         savedMixesViewModel =
                 new ViewModelProvider(this).get(SavedMixesViewModel.class);
 
-        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        ActivityMainBinding mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mainBinding.getRoot());
 
-        BottomNavigationView navView = binding.navView;
+        BottomNavigationView navView = mainBinding.navView;
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_breathe,
                 R.id.navigation_melodies,
@@ -75,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         initPreferences();
+
+        mainBinding.saveMixButton.setOnClickListener(v->openDialogBox());
 
 
     }
@@ -160,5 +160,11 @@ public class MainActivity extends AppCompatActivity {
 
     public List<Integer> getNowPlaying(){
         return melodyManager.getNowPlaying();
+    }
+
+    private void openDialogBox(){
+        Log.d(TAG, "openDialogBox: " + "ooooooooooooooooooooooooooo");
+        SaveMixDialog saveMixDialog = new SaveMixDialog(melodyManager.getNowPlaying());
+        saveMixDialog.show(getSupportFragmentManager(), "SaveMix");
     }
 }

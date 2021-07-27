@@ -7,7 +7,6 @@ import android.os.Message;
 import com.example.relaxmelodies.MainActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 //TODO: write codes in a separate file and do not import main activity!
@@ -98,6 +97,8 @@ public class DatabaseManager {
                 return;
             }
         }
-        list.add(new Mix(mixMelody.getName(), Arrays.asList(mixMelody.getMelodyId())));
+        Mix mix = new Mix(mixMelody.getName());
+        mix.addMelodyId(mixMelody.getId());
+        list.add(mix);
     }
 }

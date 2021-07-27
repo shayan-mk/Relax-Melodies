@@ -1,5 +1,6 @@
 package com.example.relaxmelodies.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Mix {
@@ -7,9 +8,9 @@ public class Mix {
     private final String name;
     private final List<Integer> melody_ids;
 
-    public Mix(String name, List<Integer> melody_ids) {
+    public Mix(String name) {
         this.name = name;
-        this.melody_ids = melody_ids;
+        this.melody_ids = new ArrayList<>();
     }
 
     public String getName() {
