@@ -6,16 +6,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.settings.SettingsFragment">
 
-    <PreferenceCategory android:title="@string/title_settings">
+    <PreferenceCategory android:title="Appearance">
+        <DropDownPreference
+            android:key="night_mode"
+            android:summary="Configure app theme (light or dark)"
+            android:title="Night Mode"
+            android:entries="@array/night_mode"
+            android:entryValues="@array/night_mode_values"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Data">
         <Preference
             android:key="truncate"
             android:summary="Tap to delete all saved mixes."
             android:title="Delete all data"/>
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="night_mode"
-            android:summary="Turn this option on or off"
-            android:title="Night Mode" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="Breathe">
+        <ListPreference
+            android:key="inhale_duration"
+            android:title="Inhale Duration"
+            android:summary="Current duration: 3s (tap to change)"
+            android:entries="@array/duration"
+            android:entryValues="@array/duration_values"/>
+
+        <ListPreference
+            android:key="exhale_duration"
+            android:title="Exhale Duration"
+            android:summary="Current duration: 3s (tap to change)"
+            android:entries="@array/duration"
+            android:entryValues="@array/duration_values"/>
+
+        <ListPreference
+            android:key="hold_duration"
+            android:title="Hold Duration"
+            android:summary="Current duration: 3s (tap to change)"
+            android:entries="@array/duration"
+            android:entryValues="@array/duration_values"/>
+    </PreferenceCategory>
+
+
 
 </PreferenceScreen>

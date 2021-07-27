@@ -72,22 +72,26 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        initPreferences();
+        setNightMode();
 
         mainBinding.saveMixButton.setOnClickListener(v->openDialogBox());
 
 
     }
 
-    private void initPreferences() {
-
+    public void setNightMode() {
         SharedPreferences appSettingsPref = getSharedPreferences("AppSettingsPrefs", 0);
-        boolean isNightMode = appSettingsPref.getBoolean("NightMode", false);
+        String nightModeState = appSettingsPref.getString("night_mode", "");
 
-        if (isNightMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        switch (nightModeState) {
+            case "OFF":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case "ON":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case "SYSTEM":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         }
     }
 

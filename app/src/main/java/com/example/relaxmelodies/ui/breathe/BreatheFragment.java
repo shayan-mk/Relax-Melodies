@@ -83,9 +83,9 @@ public class BreatheFragment extends Fragment {
     private void prepareAnimation(){
 
         SharedPreferences appSettingsPref = getActivity().getSharedPreferences("AppSettingsPrefs", 0);
-        inhaleDuration = appSettingsPref.getInt("InhaleDuration", DEFAULT_TIME_UNIT);
-        exhaleDuration = appSettingsPref.getInt("ExhaleDuration", DEFAULT_TIME_UNIT);
-        holdDuration = appSettingsPref.getInt("HoldDuration", DEFAULT_TIME_UNIT);
+        inhaleDuration = appSettingsPref.getInt("inhale_duration", DEFAULT_TIME_UNIT);
+        exhaleDuration = appSettingsPref.getInt("exhale_duration", DEFAULT_TIME_UNIT);
+        holdDuration = appSettingsPref.getInt("hold_duration", DEFAULT_TIME_UNIT);
 
 
         //Inhale - make large
