@@ -1,13 +1,17 @@
 package com.example.relaxmelodies.ui.savedMixes;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,12 +24,21 @@ import com.example.relaxmelodies.MainActivity;
 import com.example.relaxmelodies.database.Mix;
 import com.example.relaxmelodies.databinding.FragmentSavedMixesBinding;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import static android.app.Activity.RESULT_OK;
 
 public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.ItemActionListener {
 
+    private static final String TAG = SavedMixesFragment.class.getName();
     private SavedMixesViewModel savedMixesViewModel;
     private FragmentSavedMixesBinding binding;
+    private EditText searchBar;
+
+    private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
+    private static final int REQUEST_CODE = 1234;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,9 +56,9 @@ public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.It
 //        recyclerView.setHasFixedSize(true);
 
         Button micButton = binding.micButton;
-        //TODO: voice search
+        micButton.setOnClickListener(v -> startVoiceRecognitionActivity());
 
-        EditText searchBar = binding.editText;
+        searchBar = binding.editText;
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -54,7 +67,7 @@ public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.It
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //TODO: filter results
+                savedMixesViewModel.filterSavedMixes(s.toString());
             }
 
             @Override
@@ -89,4 +102,52 @@ public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.It
         super.onDestroyView();
         binding = null;
     }
+
+    private void speak(){
+        //intent to show speech
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say name of the mix");
+
+        //start intent
+        try {
+            //show dialog
+            startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+            Log.d(TAG, "speak: ");
+        }
+        catch (Exception e){
+            //if there was some error
+            //get message of error and show
+            Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void startVoiceRecognitionActivity()
+    {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Voice searching...");
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+    /**
+     * Handle the results from the voice recognition activity.
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK)
+        {
+            // Populate the wordsList with the String values the recognition engine thought it heard
+            final ArrayList< String > matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (!matches.isEmpty())
+            {
+                String Query = matches.get(0);
+                searchBar.setText(Query);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }
