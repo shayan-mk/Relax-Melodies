@@ -83,6 +83,7 @@ public class SavedMixesFragment extends Fragment implements SavedMixesAdapter.It
             @Override
             public void onChanged(List<Mix> mixes) {
                 adapter.submitList(mixes);
+                adapter.notifyDataSetChanged();
             }
         });
 

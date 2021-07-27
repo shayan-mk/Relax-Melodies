@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openDialogBox(){
-        Log.d(TAG, "openDialogBox: " + "ooooooooooooooooooooooooooo");
+        Log.d(TAG, "openDialogBox: " + melodyManager.getNowPlaying());
         SaveMixDialog saveMixDialog = new SaveMixDialog(melodyManager.getNowPlaying());
         saveMixDialog.show(getSupportFragmentManager(), "SaveMix");
     }

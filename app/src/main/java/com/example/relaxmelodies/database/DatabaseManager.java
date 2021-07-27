@@ -100,7 +100,7 @@ public class DatabaseManager {
             }
         }
         Mix mix = new Mix(mixMelody.getName());
-        mix.addMelodyId(mixMelody.getId());
+        mix.addMelodyId(mixMelody.getMelodyId());
         list.add(mix);
     }
 }

@@ -22,7 +22,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
         switch (key) {
-            case "inhale_duratoin":
+            case "inhale_duration":
             case "exhale_duration":
             case "hold_duration":
                 Preference preference = findPreference(key);

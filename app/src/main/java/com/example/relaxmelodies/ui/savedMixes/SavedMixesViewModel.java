@@ -29,7 +29,7 @@ public class SavedMixesViewModel extends ViewModel {
     public void deleteSavedMix(Mix savedMix){
         Log.d(TAG, "deleteSavedMix: " + cacheSavedMixes.get(0).getMelody_ids());
         cacheSavedMixes.remove(savedMix);
-        mSavedMixes.setValue(cacheSavedMixes);
+        mSavedMixes.setValue(new ArrayList<>(cacheSavedMixes));
     }
 
     public LiveData<List<Mix>> getSavedMixes() {
