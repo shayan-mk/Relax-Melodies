@@ -11,7 +11,7 @@ import android.view.ViewTreeObserver
 import android.view.animation.DecelerateInterpolator
 import com.example.relaxmelodies.R
 import com.google.android.material.card.MaterialCardView
-import kotlinx.android.synthetic.main.partial_now_playing.view.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlin.math.abs
 import kotlin.math.min
 

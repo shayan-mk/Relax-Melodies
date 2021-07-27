@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="duration">
+        <item>3s</item>
+        <item>4s</item>
+        <item>5s</item>
+    </array>
+
+    <array name="duration_values">
+        <item>3000</item>
+        <item>4000</item>
+        <item>5000</item>
+    </array>
+
+    <array name="night_mode">
+        <item>Always on (Dark mode)</item>
+        <item>Always off (Light mode)</item>
+        <item>Follow system settings</item>
+    </array>
+
+    <array name="night_mode_values">
+        <item>ON</item>
+        <item>OFF</item>
+        <item>SYSTEM</item>
+    </array>
+
+
+</resources>
